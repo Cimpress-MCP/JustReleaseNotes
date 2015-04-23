@@ -172,16 +172,13 @@ class ReleaseNotes:
         
         hashAlreadySeen = []
         noPromotedVersionSoFar = True
-        sortedVersionsInDescendingOrder = [] + hashesInVersion.keys();
-        sortedVersionsInDescendingOrder.sort(key=lambda s: map(int, s.split('.')), reverse=True)
+        sortedVersions = [] + hashesInVersion.keys();
+        sortedVersions.sort(key=lambda s: map(int, s.split('.')))
         
+        content = []
         # generate version blocks
-        for version in sortedVersionsInDescendingOrder:
-            if version in self.__promotedVersionsInfo and noPromotedVersionSoFar == True:
-                noPromotedVersionSoFar = False
-                content = content + self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar)           
-                ticketsSoFar = []                
-             
+        for version in sortedVersions:
+        
             if version in self.__promotedVersionsInfo:
                 print "Generating info for version " + version
                 
@@ -195,7 +192,11 @@ class ReleaseNotes:
                     print "Missing commit message info for "  + hash
 
             if version in self.__promotedVersionsInfo:
-                content = content + self.__printVersionBlock(version, ticketsSoFar)           
+                content = content + [self.__printVersionBlock(version, ticketsSoFar)]           
                 ticketsSoFar = []                
 
-        return content
+        if len(ticketsSoFar) > 0:
+            content = content + [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar)]           
+        
+        content.sort(reverse=True)        
+        return "\n".join(content)
