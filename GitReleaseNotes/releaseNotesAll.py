@@ -8,6 +8,7 @@ import json
 
 from jira import *
 from artifactory import *
+from github_releases import *
 from gitrepo import *
 from releaseNotes import *    
 
@@ -27,20 +28,31 @@ for packageName, conf in releaseNotesConfig["packages"].items():
 
     # automatically include some info... FIX ME, PLEASE!
     conf["PackageName"] = packageName
-    conf["JiraConf"] = releaseNotesConfig["JiraConf"]
+    if 'JiraConf' in releaseNotesConfig.keys():
+        conf["JiraConf"] = releaseNotesConfig["JiraConf"]
     conf["WebImagesPath"] = releaseNotesConfig["WebImagesPath"]
-    conf["StorageUrl"] = releaseNotesConfig["Artifactory"]["StorageUrl"]
+    if 'Artifactory' in releaseNotesConfig.keys():
+        conf["StorageUrl"] = releaseNotesConfig["Artifactory"]["StorageUrl"]
     
     if 'DirectDependencies' in conf:
         conf["DirectDependenciesInfo"] = {}
         for dep in list(conf["DirectDependencies"].keys()):
             if dep in releaseNotesConfig["packages"]:
                 conf["DirectDependenciesInfo"][dep] = releaseNotesConfig["packages"][dep]
-        
-    artifactory = Artifactory(conf)
-    promotedVersionsInfo = artifactory.retrievePromotedVersions()
+
+    if 'Releases' in conf.keys():
+        provider = conf["Releases"]["Provider"]
+        if provider == 'Artifactory':
+            providerObject = Artifactory(conf)
+        elif provider == 'GitHub Releases':
+            providerObject = GitHubReleases(conf["Releases"])
+        promotedVersionsInfo = providerObject.retrievePromotedVersions()
+    else:
+        print "Generator needs access to system that stores artifacts"
+        sys.exit(1)
     
     gitRepo = GitRepo(conf)
+
     generator = ReleaseNotes(conf, gitRepo, promotedVersionsInfo)
     releaseNotes = generator.generateReleaseNotesByPromotedVersions()
     

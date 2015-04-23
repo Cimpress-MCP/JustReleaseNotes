@@ -16,19 +16,15 @@ Configuration file is in flux. For now it looks something like this.
 
 	{ 
 		"pathToSave" : "<path>",
-		
 	    "WebImagesPath" : "<path to images>",
-	    
 	    "JiraConf" : {
 	        "JiraBrowseUrl" : "<jira browse url>",
 	        "JiraRestSearchUrl" : "<jira rest search url>",
 	        "Authorization" : "<jira auth>"
-	        },
-	        
+	    },
 	    "Artifactory" : {
 	        "StorageUrl" : "<artifactory url>"
 	    },
-	
 	    "packages" : {
 	        "<package name>" : {
 	            "GitRepositoryUrl" : "<git repository url>",
