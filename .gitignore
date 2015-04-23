@@ -1,3 +1,5 @@
 GitReleaseNotes.egg-info/
 GitReleaseNotes/output/
 *.pyc
+.idea/
+*.json
