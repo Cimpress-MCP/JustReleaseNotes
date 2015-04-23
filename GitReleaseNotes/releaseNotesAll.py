@@ -4,6 +4,7 @@ import json
 import getpass
 import glob
 import shutil
+import json
 
 from jira import *
 from artifactory import *
@@ -13,7 +14,13 @@ from releaseNotes import *
 # The Jira's SSL certificate is invalid and disabling ssl verification shows an annoying warning
 requests.packages.urllib3.disable_warnings()
 
-from releaseNotesConfiguration import releaseNotesConfig
+if (len(sys.argv) < 2):
+    print "Provide configuration file with json as parameter."
+    sys.exit(1)
+
+file = open(sys.argv[1], 'r')
+fileContents = file.read()
+releaseNotesConfig = json.loads(fileContents)
 
 # generate release notes
 for packageName, conf in releaseNotesConfig["packages"].items():
