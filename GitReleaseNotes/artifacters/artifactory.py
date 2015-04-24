@@ -24,8 +24,8 @@ class Artifactory:
         self.__log("Retrieving info for version {0}".format(version))
         uri = "{0}/{1}/{2}/{3}".format(
             self.__artifactoryUrl,
-            self.__conf["ArtifactoryRepository"],
-            self.__conf["ArtifactoryArtifactUri"],
+            self.__conf["Repository"],
+            self.__conf["ArtifactUri"],
             version)
         r = requests.get( uri )
         response = json.loads(r.text)
@@ -123,8 +123,8 @@ class Artifactory:
           
     def __extractVersion(self, version):
         versionRegex = self.__defaultVersionRegex
-        if "ArtifactoryRegexToExtractVersion" in self.__conf:
-            versionRegex = self.__conf["ArtifactoryRegexToExtractVersion"]
+        if "RegexToExtractVersion" in self.__conf:
+            versionRegex = self.__conf["RegexToExtractVersion"]
         regex = re.compile(versionRegex)
 
         extractedVersion = regex.findall(version)      
@@ -140,13 +140,13 @@ class Artifactory:
           
     def retrievePromotedVersions(self):
         self.__log("Retrieving promoted ({0}) versions {1} ...".format(
-            self.__conf["ArtifactoryRepository"],
-            self.__conf["ArtifactoryArtifactUri"]))
+            self.__conf["Repository"],
+            self.__conf["ArtifactUri"]))
             
         uri = "{0}/{1}/{2}".format(
             self.__artifactoryUrl,
-            self.__conf["ArtifactoryRepository"],
-            self.__conf["ArtifactoryArtifactUri"])
+            self.__conf["Repository"],
+            self.__conf["ArtifactUri"])
             
         r = requests.get( uri )
         response = json.loads(r.text)

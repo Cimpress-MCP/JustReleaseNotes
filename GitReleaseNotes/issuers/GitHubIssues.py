@@ -9,9 +9,8 @@ class GitHubIssues:
     def __init__(self, conf):
         self.__conf = conf
         self.__iconMappings = { "closed" : "http://hydra-media.cursecdn.com/wiki.bukkit.org/8/8c/Favicon-github.png?version=3ba18692efbc14e64d1bfd7c9639a0f2",
-                                "open" : "http://hydra-media.cursecdn.com/wiki.bukkit.org/8/8c/Favicon-github.png?version=3ba18692efbc14e64d1bfd7c9639a0f2"
-                                }
-        headers = { 'Authorization': "token " + self.__conf["ApiToken"] }
+                                "open" : "http://hydra-media.cursecdn.com/wiki.bukkit.org/8/8c/Favicon-github.png?version=3ba18692efbc14e64d1bfd7c9639a0f2" }
+        headers = { 'Authorization': self.__conf["Authorization"] }
         response = requests.get( self.__conf["Url"] + "?filter=all&state=all", headers = headers, verify=False )
         tickets = json.loads(response.text)
         for ticketData in tickets:
@@ -31,7 +30,7 @@ class GitHubIssues:
             uri = self.__conf["Url"] + "/" + ticket
             self.__log("Retrieving ticket info for {0}: {1}".format(ticket, uri))
 
-            headers = { 'Authorization': "token " + self.__conf["ApiToken"] }
+            headers = { 'Authorization': self.__conf["Authorization"] }
             r = requests.get( uri, headers = headers, verify=False )
 
             data = json.loads(r.text)
@@ -46,14 +45,14 @@ class GitHubIssues:
         if "title" in data:
             title = data["title"]
             embedded_links = {}
-            for ticket in self.extractTicketsFromMessage(title):
-                embedded_links["#" + ticket] = "{0}/{1}".format(self.__conf["HtmlUrl"],ticket)
+            for t in self.extractTicketsFromMessage(title):
+                embedded_links["#" + t] = "{0}/{1}".format(self.__conf["HtmlUrl"], t)
         else:
             title = "Untitled"
 
         return { "state_icon" : self.__iconMappings[data["state"]],
             "html_url" : data["html_url"],
-            "ticket" : ticket,
+            "ticket" : "#{0}".format(ticket),
             "title" : title,
             "embedded_link" : embedded_links }
 
@@ -61,7 +60,7 @@ class GitHubIssues:
         message = message.replace("\n", " ").replace("\r", " ").replace("\t", " ");
         p = re.compile('#([0-9]+)');
         results = p.findall(message)
-        if results.count > 0:
+        if len(results) > 0:
             return results
         else:
             return ["NULL"]

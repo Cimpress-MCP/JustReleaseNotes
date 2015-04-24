@@ -9,8 +9,9 @@ class JiraIssues:
     __cache = {}
 
     def __init__(self, conf):
-        self.__restSearchUrl = conf["JiraRestSearchUrl"]
+        self.__restSearchUrl = conf["Url"]
         self.__jiraAuthorization = conf["Authorization"]
+        self.__conf = conf
 
     def __log(self, message):
         print ("Jira: " + message)
@@ -22,26 +23,48 @@ class JiraIssues:
             self.__log("Cached ticket info for " + ticket)
             return self.__cache[ticket]
 
-        uri = self.__restSearchUrl + ticket
+        uri = "{0}/{1}".format(self.__restSearchUrl,ticket)
         headers = { 'Authorization': self.__jiraAuthorization }
         self.__log("Retrieving ticket info for " + ticket)
         r = requests.get( uri, headers = headers, verify=False )
         data = json.loads(r.text)
         if "errorMessages" in data:
-            self.__log("Error retrieving Jira info: " + data["errorMessages"])
+            self.__log("Error retrieving Jira info: " + ",".join(data["errorMessages"]))
         self.__cache[ticket] = data
         return data
 
-    def printTicketInfo(self, ticket):
+    def getTicketInfo(self, ticket):
         data = self.__readJsonInfo(ticket)
 
-        r = [
-            self.__fieldIcon(data["fields"]["issuetype"]),
-            self.__fieldIcon(data["fields"]["status"]),
-            self.__fieldIcon(data["fields"]["priority"]),
-            '<a href="{0}{1}" class="extiw">{1}</a>'.format(self.__conf["JiraConf"]["JiraBrowseUrl"], ticket),
-            data["fields"]["summary"],
-            ]
+        embedded_links = {}
+        title = "Untitled"
+        ret = { "html_url" : "{0}/{1}".format(self.__conf["HtmlUrl"],ticket),
+                "ticket" : ticket,
+                "title" : title }
 
-        return ' '.join(r) + '\n'
+        if "fields" in data.keys():
+            title = data["fields"]["summary"]
+            ret["title"] = title
+            for ticket in self.extractTicketsFromMessage(title):
+                embedded_links[ticket] = "{0}/{1}".format(self.__conf["HtmlUrl"],ticket)
+            ret["state_icon"] = self.__fieldIcon(data["fields"]["status"])
+            ret["issue_type_icon"] = self.__fieldIcon(data["fields"]["issuetype"])
+            ret["priority_icon"] = self.__fieldIcon(data["fields"]["priority"])
+            ret["embedded_link"] = embedded_links
+        else:
+            return None
 
+        return ret
+
+    def __fieldIcon(self, f):
+        parts = f["iconUrl"].split("/")
+        return '{0}/{1}'.format(self.__conf["WebImagesPath"], parts[len(parts)-1], f["name"])
+
+    def extractTicketsFromMessage(self, message):
+        message = message.replace("\n", " ").replace("\r", " ").replace("\t", " ")
+        p = re.compile('([A-Z]{2,5}-[0-9]{5})')
+        results = p.findall(message)
+        if len(results) > 0:
+            return results
+        else:
+            return ["NULL"]

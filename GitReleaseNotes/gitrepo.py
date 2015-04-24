@@ -4,7 +4,7 @@ from git import Repo
 class GitRepo:
     __repo = ""
     __repoX = ""
-    __packageName = "";
+    __packageName = ""
     
     gitCommitsList = []
     gitCommitMessagesByHash = {}
@@ -22,13 +22,14 @@ class GitRepo:
         self.__repo = conf["GitRepositoryUrl"] 
         self.__packageName = conf["PackageName"]
         self.__repoX = ""
+        self.pathToSave = conf["pathToSave"]
         
     def __log(self, message):
         print ("Git: " + message)
         sys.stdout.flush()
         
     def checkout(self):
-        path = os.path.dirname(os.path.realpath(__file__)) + "\\" + self.__packageName
+        path = self.pathToSave + "\\" + self.__packageName
         if not os.path.isdir(path):
             self.__log("Creating folder at: " + path)
             os.makedirs(path)

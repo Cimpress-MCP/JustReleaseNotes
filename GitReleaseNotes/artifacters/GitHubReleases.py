@@ -20,7 +20,7 @@ class GitHubReleases:
             self.__conf["Provider"],
             self.__conf["Url"]))
 
-        headers = { 'Authorization': "token " + self.__conf["ApiToken"] }
+        headers = { 'Authorization': self.__conf["Authorization"] }
         r = requests.get( self.__conf["Url"], headers = headers, verify=False )
 
         response = json.loads(r.text)
