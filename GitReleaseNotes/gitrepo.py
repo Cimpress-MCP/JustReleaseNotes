@@ -1,13 +1,10 @@
 import os, sys, re, subprocess
-import requests
-import json
-import getpass
 from git import Repo
         
 class GitRepo:
     __repo = ""
     __repoX = ""
-    __packageName = "";
+    __packageName = ""
     
     gitCommitsList = []
     gitCommitMessagesByHash = {}
@@ -25,22 +22,24 @@ class GitRepo:
         self.__repo = conf["GitRepositoryUrl"] 
         self.__packageName = conf["PackageName"]
         self.__repoX = ""
+        self.pathToSave = conf["pathToSave"]
         
     def __log(self, message):
         print ("Git: " + message)
         sys.stdout.flush()
         
     def checkout(self):
-        path = os.path.dirname(os.path.realpath(__file__)) + "\\" + self.__packageName
+        path = self.pathToSave + "\\" + self.__packageName
         if not os.path.isdir(path):
+            self.__log("Creating folder at: " + path)
             os.makedirs(path)
-        self.__log("Creating folder at: " + path)
+
         os.chdir(path)
         self.__log("Cloning " + self.__repo + " at " + path)
         subprocess.Popen("git clone " + self.__repo + " ." ).wait()
-        
-        self.__repoX = Repo( ".")
-    
+        subprocess.Popen("git pull").wait()
+        self.__repoX = Repo(".")
+
     def setParents(self, commit):
         if len(commit.parents) == 0:
             return
@@ -100,11 +99,11 @@ class GitRepo:
             hexsha = str(t.commit)
             if tag.startswith("non-published"):
                 continue
-            
-            if not re.match("^[0-9]+\.[0-9]+/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$", tag):
+
+            version = tag.split("/")[-1]
+            if not re.match("^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$", version):
                 continue
-            
-            version = tag.split("/")[1]
+
             if hexsha in self.versionsByGitHash:
                 v1 = version
                 v2 = self.versionsByGitHash[hexsha]
@@ -117,7 +116,7 @@ class GitRepo:
                     self.versionsByGitHash[hexsha] in promotedVersionsList))
             else:
                 self.versionsByGitHash[hexsha] = version     
-                
+
             self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha,version, [])
             
         self.__optimizeHistoryByVersion()

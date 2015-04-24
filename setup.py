@@ -10,6 +10,7 @@ setup(name='GitReleaseNotes',
       packages=['GitReleaseNotes'],
       install_requires=[
           'requests',
-		  'gitpython'
+          'gitpython'
       ],
-      zip_safe=False)
+      zip_safe=False
+)

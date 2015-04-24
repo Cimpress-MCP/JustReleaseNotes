@@ -9,40 +9,57 @@ The tool provides a way of customizing the process of generating the Release Not
 
 python releaseNotesAll.py <configuration.json>
 
+## Usage
+
+In order to trigger release notes generation
+
+``&python GitReleaseNotes\releaseNotesAll.py <configuration.json>``
 
 ## Configuration
 
-Configuration file is in flux. For now it looks something like this.
+Configuration file is in flux. For now it is a json looking something like this:
 
-	{ 
-		"pathToSave" : "<path>",
-		
-	    "WebImagesPath" : "<path to images>",
-	    
-	    "JiraConf" : {
-	        "JiraBrowseUrl" : "<jira browse url>",
-	        "JiraRestSearchUrl" : "<jira rest search url>",
-	        "Authorization" : "<jira auth>"
-	        },
-	        
-	    "Artifactory" : {
-	        "StorageUrl" : "<artifactory url>"
-	    },
+	{
+	    "pathToSave" : <output path>,
 	
 	    "packages" : {
-	        "<package name>" : {
-	            "GitRepositoryUrl" : "<git repository url>",
-	            "ArtifactoryRepository" : "<artifactory repository>",
-	            "ArtifactoryArtifactUri" : "<artifactory artifact url>",
-	            "WikiPageTitle" : "<wiki page title>",
-	            "ReleaseNotesFormat" : "<format>",
-	            "DirectDependencies" : {
-	                "ANY" : {
-	                    "type" : "<dependency type>"
-	                }
-	            }
+	        <package name> : {
+	            "Issues" : {
+	              "Provider" : <issues provider>,
+	              "HtmlUrl" : ...,
+	              "Authorization" : ...,
+	              "Url" : ...,
+	              "WebImagesPath" : ...
+	            },
+	            "Releases" : {
+	              "Provider" : <releases provider>,
+	              "Repository" : ...,
+	              "ArtifactUri" : ...,
+	              "StorageUrl" : ...
+	            },
+	            "GitRepositoryUrl" : ...,
+	            "ReleaseNotesWriter" : <notes writer>
 	        }
 	    }
 	}
+
+where
+
+```notes writer``` is either:
+
+- HtmlWriter
+- MarkdownWriter
+
+```releases provider``` is either:
+
+- Artifactory
+- GitHubReleases
+
+```issues provider``` is either:
+
+- JiraIssues
+- GitHubIssues
+
+
 
 
