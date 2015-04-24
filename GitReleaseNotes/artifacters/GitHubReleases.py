@@ -1,10 +1,6 @@
-import os, sys, re, subprocess
+import sys
 import requests
 import json
-import getpass
-import tempfile
-from filever import *
-import xml.etree.ElementTree as ET
 
 class GitHubReleases:
     __defaultVersionRegex = "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
@@ -24,7 +20,9 @@ class GitHubReleases:
             self.__conf["Provider"],
             self.__conf["Url"]))
 
-        r = requests.get( self.__conf["Url"] )
+        headers = { 'Authorization': "token " + self.__conf["ApiToken"] }
+        r = requests.get( self.__conf["Url"], headers = headers, verify=False )
+
         response = json.loads(r.text)
         
         for release in response:

@@ -1,7 +1,6 @@
-import os, sys, re, subprocess
+import os, sys, re
 import requests
 import json
-import getpass
 import tempfile
 from filever import *
 import xml.etree.ElementTree as ET
@@ -169,6 +168,3 @@ class Artifactory:
         
         self.__log("Found {0} promoted versions".format(len(self.__promotedVersions)))
         return self.__promotedVersions
-
-        
-        
