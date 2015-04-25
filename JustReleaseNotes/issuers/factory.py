@@ -2,7 +2,7 @@ import importlib
 
 def create(name, conf):
     try:
-        module = importlib.import_module("issuers.{0}".format(name))
+        module = importlib.import_module("JustReleaseNotes.issuers.{0}".format(name))
         issuerClass = getattr(module, name)
         return issuerClass(conf)
     except:

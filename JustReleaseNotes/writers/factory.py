@@ -2,7 +2,7 @@ import importlib
 
 def create(name, ticketProvider):
     try:
-        module = importlib.import_module("writers.{0}".format(name))
+        module = importlib.import_module("JustReleaseNotes.writers.{0}".format(name))
         writerClass = getattr(module, name)
         return writerClass(ticketProvider)
     except:

@@ -3,7 +3,7 @@ import GitHubReleases
 
 def create(name, conf):
     try:
-        module = importlib.import_module("artifacters.{0}".format(name))
+        module = importlib.import_module("JustReleaseNotes.artifacters.{0}".format(name))
         artifacterClass = getattr(module, name)
         return artifacterClass(conf)
     except:

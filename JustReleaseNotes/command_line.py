@@ -12,7 +12,7 @@ from artifacters import factory
 from releaseNotes import *
 
 def main():
-    parser = argparse.ArgumentParser(description='Instruments release process.')
+    parser = argparse.ArgumentParser(prog="just_release", description='Instruments release process.')
     parser.add_argument('command', metavar='N', action="store", choices=['notes'])
     parser.add_argument('--config', '-c', '--c', metavar='config.json', nargs='?', help='Specifies the configuration to use')
     args = parser.parse_args()
