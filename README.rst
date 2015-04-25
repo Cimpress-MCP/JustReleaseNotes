@@ -3,6 +3,11 @@
    :align: left
    :target: https://codeclimate.com/github/Cimpress-MCP/JustReleaseNotes
 
+.. image:: https://codeclimate.com/github/Cimpress-MCP/JustReleaseNotes/badges/coverage.svg
+   :alt: Code Climate
+   :align: left
+   :target: https://codeclimate.com/github/Cimpress-MCP/JustReleaseNotes
+
 ==================
 Just Release Notes
 ==================
