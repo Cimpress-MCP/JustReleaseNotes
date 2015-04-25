@@ -11,7 +11,6 @@ from writers import factory
 from artifacters import factory
 from releaseNotes import *
 
-
 def main():
     parser = argparse.ArgumentParser(description='Instruments release process.')
     parser.add_argument('command', metavar='N', action="store", choices=['notes'])

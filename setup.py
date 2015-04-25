@@ -1,7 +1,6 @@
 import os
 from setuptools import setup
 
-version = '0.1'
 description = "Release notes generator package"
 cur_dir = os.path.dirname(__file__)
 try:
@@ -17,7 +16,7 @@ setup(name='JustReleaseNotes',
       author='Ivan Stanishev, Rafal Nowosielski',
       author_email='ivan@stanishev.net, rafal@nowosielski.link',
       license='Apache License 2.0',
-      packages=['JustReleaseNotes'],
+      packages=['JustReleaseNotes', 'JustReleaseNotes.artifacters', 'JustReleaseNotes.issuers', 'JustReleaseNotes.writers'],
       install_requires=[
           'requests',
           'gitpython'
