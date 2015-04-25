@@ -3,3 +3,5 @@ GitReleaseNotes/output/
 *.pyc
 .idea/
 *.json
+JustReleaseNotes.egg-info/
+dist/
