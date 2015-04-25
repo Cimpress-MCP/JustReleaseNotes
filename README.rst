@@ -1,23 +1,28 @@
-# GitReleaseNotes
+==================
+Just Release Notes
+==================
 
 The tool provides a way of customizing the process of generating the Release Notes based on:
+
 - Issue tracking identifiers in commit messages
 - Tags on commit
 - Release artifacts repository
 
-## Running the tool
+----------------
+Running the tool
+----------------
 
-python releaseNotesAll.py <configuration.json>
+Usage
+-----
 
-## Usage
+To run the tool, call::
+   
+  & python GitReleaseNotes\releaseNotesAll.py <configuration.json>
 
-In order to trigger release notes generation
+Configuration
+-------------
 
-``&python GitReleaseNotes\releaseNotesAll.py <configuration.json>``
-
-## Configuration
-
-Configuration file is in flux. For now it is a json looking something like this:
+Configuration file is in flux. For now it is a json looking something like this::
 
 	{
 	    "pathToSave" : <output path>,
@@ -45,21 +50,17 @@ Configuration file is in flux. For now it is a json looking something like this:
 
 where
 
-```notes writer``` is either:
+``notes writer`` is either:
 
 - HtmlWriter
 - MarkdownWriter
 
-```releases provider``` is either:
+``releases provider`` is either:
 
 - Artifactory
 - GitHubReleases
 
-```issues provider``` is either:
+``issues provider`` is either:
 
 - JiraIssues
 - GitHubIssues
-
-
-
-

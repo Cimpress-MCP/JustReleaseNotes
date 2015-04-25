@@ -1,4 +1,4 @@
-import os, sys, re, subprocess
+import os, sys, re
 from git import Repo
         
 class GitRepo:
@@ -29,16 +29,18 @@ class GitRepo:
         sys.stdout.flush()
         
     def checkout(self):
-        path = self.pathToSave + "\\" + self.__packageName
+        path = os.path.join(self.pathToSave, self.__packageName)
         if not os.path.isdir(path):
             self.__log("Creating folder at: " + path)
             os.makedirs(path)
 
-        os.chdir(path)
         self.__log("Cloning " + self.__repo + " at " + path)
-        subprocess.Popen("git clone " + self.__repo + " ." ).wait()
-        subprocess.Popen("git pull").wait()
-        self.__repoX = Repo(".")
+        try:
+            self._repoX = Repo.clone_from(self.__repo, path)
+        except:
+            self.__repoX = Repo(path)
+            o = self.__repoX.remotes.origin
+            o.pull()
 
     def setParents(self, commit):
         if len(commit.parents) == 0:

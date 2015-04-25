@@ -1,16 +1,30 @@
+import os
 from setuptools import setup
 
-setup(name='GitReleaseNotes',
+version = '0.1'
+description = "Release notes generator package"
+cur_dir = os.path.dirname(__file__)
+try:
+    long_description = open(os.path.join(cur_dir, 'README.rst')).read()
+except:
+    long_description = description
+
+setup(name='JustReleaseNotes',
       version='0.1',
-      description='Release notes generator tool',
-      url='https://github.com/Cimpress-MCP/GitReleaseNotes',
+      description='Release notes generator package',
+      long_description=description,
+      url='https://github.com/Cimpress-MCP/JustReleaseNotes',
       author='Ivan Stanishev, Rafal Nowosielski',
-      author_email='ivan@stanishev.net',
-      license='Apache 2.0',
-      packages=['GitReleaseNotes'],
+      author_email='ivan@stanishev.net, rafal@nowosielski.link',
+      license='Apache License 2.0',
+      packages=['JustReleaseNotes'],
       install_requires=[
           'requests',
           'gitpython'
       ],
-      zip_safe=False
+      zip_safe=False,
+      entry_points="""
+      [console_scripts]
+      just_release = JustReleaseNotes.command_line:main
+      """,
 )
