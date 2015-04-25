@@ -1,3 +1,8 @@
+.. image:: https://codeclimate.com/github/Cimpress-MCP/JustReleaseNotes/badges/gpa.svg
+   :alt: Code Climate
+   :align: left
+   :target: https://codeclimate.com/github/Cimpress-MCP/JustReleaseNotes
+
 ==================
 Just Release Notes
 ==================
