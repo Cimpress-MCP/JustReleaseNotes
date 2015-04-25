@@ -4,3 +4,4 @@ GitReleaseNotes/output/
 .idea/
 *.json
 JustReleaseNotes.egg-info/
+dist/

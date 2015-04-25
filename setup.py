@@ -1,7 +1,6 @@
 import os
 from setuptools import setup
 
-version = '0.1'
 description = "Release notes generator package"
 cur_dir = os.path.dirname(__file__)
 try:
@@ -10,9 +9,9 @@ except:
     long_description = description
 
 setup(name='JustReleaseNotes',
-      version='0.1',
+      version='0.0.1',
       description='Release notes generator package',
-      long_description=description,
+      long_description=long_description,
       url='https://github.com/Cimpress-MCP/JustReleaseNotes',
       author='Ivan Stanishev, Rafal Nowosielski',
       author_email='ivan@stanishev.net, rafal@nowosielski.link',
@@ -26,5 +25,5 @@ setup(name='JustReleaseNotes',
       entry_points="""
       [console_scripts]
       just_release = JustReleaseNotes.command_line:main
-      """,
+      """
 )

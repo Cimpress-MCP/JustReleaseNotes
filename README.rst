@@ -17,7 +17,7 @@ Usage
 
 To run the tool, call::
    
-  & python GitReleaseNotes\releaseNotesAll.py <configuration.json>
+  & just_release notes -c <config.json>
 
 Configuration
 -------------
