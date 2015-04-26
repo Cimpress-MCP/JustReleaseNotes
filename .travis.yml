@@ -3,7 +3,7 @@ python:
   - 2.7
   - 3.3
 install:
-  - pip install -r tests/equirements.txt
+  - pip install -r tests/requirements.txt
   - pip install coveralls
 script:
   coverage run --source=JustReleaseNotes tests/unit-tests.py
