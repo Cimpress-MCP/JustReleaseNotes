@@ -6,9 +6,8 @@
    :alt: Code Climate
    :target: https://travis-ci.org/Cimpress-MCP/JustReleaseNotes
 
-.. image:: https://coveralls.io/repos/Cimpress-MCP/JustReleaseNotes/badge.svg
-   :alt: Coveralls
-   :target: https://coveralls.io/r/Cimpress-MCP/JustReleaseNotes
+.. image:: https://coveralls.io/repos/Cimpress-MCP/JustReleaseNotes/badge.svg?branch=master
+  :target: https://coveralls.io/r/Cimpress-MCP/JustReleaseNotes?branch=master
 
 
 ==================
