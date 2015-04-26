@@ -7,7 +7,7 @@ install:
   - pip install mocker
   - pip install coveralls
 script:
-  - python tests/unit-tests.py
-  - cd tests && coverage run --source=JustReleaseNotes unit-tests-silent.py
+  - python tests/unit-tests-silent.py
+  - coverage run --source=JustReleaseNotes tests/unit-tests.py
 after_success:
   coveralls
