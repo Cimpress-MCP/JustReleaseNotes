@@ -8,6 +8,6 @@ install:
   - pip install coveralls
 script:
   - python tests/unit-tests.py
-  - coverage run --source=JustReleaseNotes tests/unit-tests-silent.py
+  - cd tests && coverage run --source=JustReleaseNotes unit-tests-silent.py
 after_success:
   coveralls
