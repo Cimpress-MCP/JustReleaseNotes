@@ -4,9 +4,10 @@ python:
   - 3.3
 install:
   - python setup.py install
+  - pip install mocker
   - pip install coveralls
 script:
   - python tests/unit-tests.py
-  - coverage run --source=JustReleaseNotes tests/unit-tests.py
+  - coverage run --source=JustReleaseNotes tests/unit-tests-silent.py
 after_success:
   coveralls
