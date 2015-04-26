@@ -1,5 +1,6 @@
 import unittest
 import sys
+import JustReleaseNotes
 
 if __name__ == '__main__':
     test_loader = unittest.defaultTestLoader

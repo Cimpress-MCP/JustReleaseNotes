@@ -1,4 +1,5 @@
 import unittest
+import JustReleaseNotes
 from JustReleaseNotes.artifacters import GitHubReleases
 from mocker import Mocker
 import requests
