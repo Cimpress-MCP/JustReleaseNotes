@@ -8,8 +8,8 @@ class GitHubReleases_Test(unittest.TestCase):
 
   def test_retrievePromotedVersions(self):
     requests.packages.urllib3.disable_warnings()
-    file = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"GitHubReleases.json"), 'r')
-    fileContents = file.read()
+    fileContents = '[{"name": "2.0.1.153", "published_at": "2015-04-24T15:24:29Z"},' \
+                   '{"name": "1.0.0.15", "published_at": "2015-03-19T23:19:08Z"}]'
 
     config = { "Authorization" : "token 5dbf862c5197414138e70c4f3fb458c5f5a58f05",
                "Provider" : "GitHubReleases",
