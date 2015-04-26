@@ -16,7 +16,7 @@ class GitHubReleases:
         sys.stdout.flush()
 
     def retrievePromotedVersions(self):
-        self.__log("Retrieving promoted from ({0}) at {1} ...".format(
+        self.__log("Retrieving promoted from {0} at {1} ...".format(
             self.__conf["Provider"],
             self.__conf["Url"]))
 
