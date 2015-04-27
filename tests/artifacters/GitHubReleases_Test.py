@@ -3,13 +3,13 @@ from JustReleaseNotes.artifacters import GitHubReleases
 import requests
 import requests_mock
 import sys
-import StringIO
+import io
 
 class GitHubReleases_Test(unittest.TestCase):
 
   def setUp(self):
      self.__stdoutSaved = sys.stdout
-     self.__out = StringIO.StringIO()
+     self.__out = io.BytesIO()
      sys.stdout = self.__out
 
   def tearDown(self):
