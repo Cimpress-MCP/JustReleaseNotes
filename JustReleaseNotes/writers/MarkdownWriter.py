@@ -24,4 +24,4 @@ class MarkdownWriter:
                         title = re.sub(ticket, "[{1}]({0})".format(link, ticket), title)
                     data.append("* " + "![{0}]({1}) [{2}]({4}) {3}".format("state", ticketInfo["state_icon"], ticketInfo["ticket"], title, ticketInfo["html_url"]) )
 
-        return '\n'.join(data)
+        return '\n'.join(data) + '\n'

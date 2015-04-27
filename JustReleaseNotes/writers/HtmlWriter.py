@@ -15,16 +15,9 @@ class HtmlWriter:
             "<h2>" + version + "<sup><small style=\"font-size:10px\"><i> " + date + "</i></small></sup></h2>",
             ]
 
-        d = []
-        for item in list(deps.keys()):
-            if item == "ANY":
-                d.append(deps[item])
-            else:
-                d.append( '{0} {1}'.format(item, deps[item]))
-
-        if len(d) > 0:
+        if len(deps.keys()) > 0:
             data.append('<div style="background: #eee; "><i>Components: ')
-            data.append('; '.join(d))
+            data.append('; '.join(deps.values()))
             data.append('</i></div>')
 
         data.append("<ul>")
