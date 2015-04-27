@@ -1,9 +1,10 @@
 language: python
 python:
   - 2.7
+  - 3.3
 install:
   - python setup.py install
-  - pip install mocker
+  - pip install requests-mock
   - pip install coveralls
 script:
   - python unit-tests.py
