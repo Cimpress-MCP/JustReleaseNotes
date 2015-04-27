@@ -36,11 +36,11 @@ class GitRepo:
 
         self.__log("Cloning " + self.__repo + " at " + path)
         try:
-            self._repoX = Repo.clone_from(self.__repo, path)
+            self.__repoX = Repo.clone_from(self.__repo, path)
         except:
             self.__repoX = Repo(path)
-            o = self.__repoX.remotes.origin
-            o.pull()
+        o = self.__repoX.remotes.origin
+        o.pull()
 
     def setParents(self, commit):
         if len(commit.parents) == 0:

@@ -28,14 +28,16 @@ class ReleaseNotes:
      
     def __printVersionBlock(self, version, tickets):        
         date = "N/A"
-
+        deps = {}
         if version != self.__PendingPromotionCaption:
             if version in self.__promotedVersionsInfo:
                 date = self.__promotedVersionsInfo[version]["date"]
+                if "directDependencies" in self.__promotedVersionsInfo[version]:
+                    deps = self.__promotedVersionsInfo[version]["directDependencies"]
 
         if len(tickets) == 0:
             return ""
-        return self.__Writer.printVersionBlock(version, date, tickets)
+        return self.__Writer.printVersionBlock(deps, version, date, tickets)
 
     def generateReleaseNotesByPromotedVersions(self):
         

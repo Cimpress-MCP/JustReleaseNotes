@@ -96,8 +96,8 @@ class Artifactory:
             if packageName == "ANY":
                 if dep["type"] == "ivy":
                     uri = "{0}/{1}/{2}/ivy-{2}.xml".format(
-                        self.__conf["ArtifactoryRepository"],
-                        self.__conf["ArtifactoryArtifactUri"], 
+                        self.__conf["Repository"],
+                        self.__conf["ArtifactUri"],
                         version).replace("//","/")
                     fullUrl = "{0}/{1}".format(self.__artifactoryUrl,uri)
                     result[packageName] = '; '.join(self.__extractIvyDependencies(self.__downloadFile(fullUrl)))
@@ -107,8 +107,8 @@ class Artifactory:
                 # Extract from DLL
                 if dep["type"] == "dll":
                     uri = "{0}/{1}/{2}/{3}".format(
-                        self.__conf["ArtifactoryRepository"],
-                        self.__conf["ArtifactoryArtifactUri"], 
+                        self.__conf["Repository"],
+                        self.__conf["ArtifactUri"],
                         version,
                         dep["name"]).replace("//","/")
                     fullUrl = "{0}/{1}".format(self.__artifactoryUrl,uri)

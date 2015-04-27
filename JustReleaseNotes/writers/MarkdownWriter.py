@@ -8,7 +8,7 @@ class MarkdownWriter:
     def getExtension(self):
         return ".md"
 
-    def printVersionBlock(self, version, date, tickets):
+    def printVersionBlock(self, deps, version, date, tickets):
         data = ["## {0} ##".format(version), date, ""]
 
         uniqTickets = sorted(set(tickets), reverse=True)
