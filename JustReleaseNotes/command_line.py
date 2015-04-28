@@ -1,15 +1,19 @@
-import requests
 import json
 import os
+import argparse
+
+import requests
+
 import artifacters
 import writers
 import issuers
-import argparse
-from gitrepo import GitRepo
+import sourcers
+from sourcers import factory
 from issuers import factory
 from writers import factory
 from artifacters import factory
 from releaseNotes import *
+
 
 def main():
     parser = argparse.ArgumentParser(prog="just_release", description='Instruments release process.')
@@ -30,25 +34,30 @@ def main():
             releaseNotesConfig["pathToSave"] = os.path.join(currentDir, releaseNotesConfig["pathToSave"])
 
         for packageName, conf in releaseNotesConfig["packages"].items():
-            releasesConf = conf["Releases"]
-            promotedVersionsInfo = artifacters.factory.create(releasesConf["Provider"], releasesConf).retrievePromotedVersions()
+            if "Releases" in conf:
+                releasesConf = conf["Releases"]
+                promotedVersionsInfo = artifacters.factory.create(releasesConf).retrievePromotedVersions()
+            else:
+                print ("No artifacter configured: every version tag will be considered a valid release")
+                promotedVersionsInfo = {}
+
             issuesConf = conf["Issues"]
-            ticketProvider = issuers.factory.create(issuesConf["Provider"], issuesConf)
-
-            conf["PackageName"] = packageName
-            conf["pathToSave"] = releaseNotesConfig["pathToSave"]
-            gitRepo = GitRepo(conf)
-            writer = writers.factory.create(conf["ReleaseNotesWriter"], ticketProvider)
-
-            generator = ReleaseNotes(conf, ticketProvider, writer, gitRepo, promotedVersionsInfo)
-            releaseNotes = generator.generateReleaseNotesByPromotedVersions()
+            ticketProvider = issuers.factory.create(issuesConf)
 
             directory = os.path.join(releaseNotesConfig["pathToSave"],packageName)
+            conf["Source"]["Directory"] = directory
+            repo = sourcers.factory.create(conf["Source"])
+            writer = writers.factory.create(conf["ReleaseNotesWriter"], ticketProvider)
+
+            generator = ReleaseNotes(conf, ticketProvider, writer, repo, promotedVersionsInfo)
+            releaseNotes = generator.generateReleaseNotesByPromotedVersions()
+
+
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
             fileName = "index{0}".format(writer.getExtension())
-            print ("\nStoring {0} release notes at {1}\n".format(packageName, os.path.join(directory,fileName)))
+            print ("\nStoring {0} release notes at {1}".format(packageName, os.path.join(directory,fileName)))
             f = open(os.path.join(directory,fileName), "wb")
             f.write(releaseNotes.encode('utf-8'))
             f.close()

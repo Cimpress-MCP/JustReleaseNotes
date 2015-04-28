@@ -9,19 +9,31 @@ class MarkdownWriter:
         return ".md"
 
     def printVersionBlock(self, deps, version, date, tickets):
-        data = ["## {0} ##".format(version), date, ""]
+        data = ["## {0} ##".format(version)]
+        if date != 'N/A':
+            data.append(date)
 
+        data.append("")
         uniqTickets = sorted(set(tickets), reverse=True)
+        appendStabilityImprovements = False;
 
         for ticket in uniqTickets:
             if ticket == "NULL":
-                data.append("* Stability improvements")
+                appendStabilityImprovements = True
             else:
                 ticketInfo = self.__ticketProvider.getTicketInfo(ticket)
                 if ticketInfo != None:
                     title = ticketInfo["title"]
-                    for ticket, link in ticketInfo["embedded_link"].iteritems():
-                        title = re.sub(ticket, "[{1}]({0})".format(link, ticket), title)
-                    data.append("* " + "![{0}]({1}) [{2}]({4}) {3}".format("state", ticketInfo["state_icon"], ticketInfo["ticket"], title, ticketInfo["html_url"]) )
+                    if "embedded_link" in ticketInfo:
+                        for ticket, link in ticketInfo["embedded_link"].iteritems():
+                            title = re.sub(ticket, "[{1}]({0})".format(link, ticket), title)
+
+                    iconPart = ""
+                    if "issue_type_icon" in ticketInfo:
+                        iconPart = "<img src=\"{1}\" width=16 height=16></img>".format(ticketInfo["issue_type_icon"])
+                    data.append("* {0} [{1}]({3}) {2}".format(iconPart, ticketInfo["ticket"], title, ticketInfo["html_url"]) )
+
+        if appendStabilityImprovements:
+            data.append("* Stability improvements")
 
         return '\n'.join(data) + '\n'
