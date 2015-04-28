@@ -10,7 +10,7 @@ class GitHubReleases_Test(unittest.TestCase):
 
     dllFile = os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))), "test.dll")
     f = open(dllFile, "rb");
-    fileContents = bytes(f.read())
+    fileContents = f.read()
     versioner = JustReleaseNotes.artifacters.versioners.factory.create("dll");
     versions = versioner.extractVersions(fileContents, "test.dll")
     self.assertEqual(1, len(versions))

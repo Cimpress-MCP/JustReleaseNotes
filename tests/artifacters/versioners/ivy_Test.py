@@ -7,10 +7,10 @@ class GitHubReleases_Test(unittest.TestCase):
 
   def test_retrievePromotedVersionsContainsValidVersions(self):
 
-    fileContents = bytes('<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
+    fileContents = '<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
                    '<dependencies>' \
                    '</dependencies>' \
-                   '</ivy-module>')
+                   '</ivy-module>'
 
     versioner = JustReleaseNotes.artifacters.versioners.factory.create("ivy");
     versions = versioner.extractVersions(fileContents, "Ivy.xml")
@@ -18,11 +18,11 @@ class GitHubReleases_Test(unittest.TestCase):
 
   def test_retrievePromotedVersionsContainsValidVersions(self):
 
-    fileContents = bytes('<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
+    fileContents = '<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
                    '<dependencies>' \
                    '<dependency org="commons-lang" name="commons-lang" rev="2.0"/>' \
                    '</dependencies>' \
-                   '</ivy-module>')
+                   '</ivy-module>'
 
     versioner = JustReleaseNotes.artifacters.versioners.factory.create("ivy");
     versions = versioner.extractVersions(fileContents, "Ivy.xml")
@@ -32,12 +32,12 @@ class GitHubReleases_Test(unittest.TestCase):
 
   def test_retrievePromotedVersionsContainsValidVersions(self):
 
-    fileContents = bytes('<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
+    fileContents = '<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
                    '<dependencies>' \
                    '<dependency org="commons-lang" name="commons-lang" rev="2.0"/>' \
                    '<dependency org="commons-lang" name="weirdVersionComponent" rev="121.23.0.*"/>' \
                    '</dependencies>' \
-                   '</ivy-module>')
+                   '</ivy-module>'
 
     versioner = JustReleaseNotes.artifacters.versioners.factory.create("ivy");
     versions = versioner.extractVersions(fileContents, "Ivy.xml")
