@@ -1,9 +1,12 @@
-import os, sys, re
-import requests
+import sys
+import re
 import json
 import tempfile
-from filever import *
-import xml.etree.ElementTree as ET
+import os
+import versioners
+from versioners import factory
+import requests
+
 
 class Artifactory:
     __artifactoryUrl = None
@@ -53,33 +56,12 @@ class Artifactory:
         r = requests.get(response["downloadUri"], stream=True)
         if r.status_code != 200:
             return None
-            
-        f = tempfile.NamedTemporaryFile(delete=False)
-        fileName = f.name
+
+        b = bytes()
         for chunk in r.iter_content(1024):
-            f.write(chunk)
-        f.close()
-        return fileName
-        
-    def __extractDllVersion(self, fileName):
-        if fileName is None:
-            return None
-        dependencyVersion = calcversioninfo(fileName)        
-        os.remove(fileName)        
-        return dependencyVersion
-        
-    def __extractIvyDependencies(self, fileName):
-        tree = ET.parse(fileName)
-        root = tree.getroot()
-        deps = root.findall('./dependencies/dependency')
-        res = []
-        for dep in deps:
-            v = dep.attrib['name'] + ": " + dep.attrib['rev']
-            if 'revConstraint' in dep.attrib:
-                v = v + " (" + dep.attrib['revConstraint'] + ")"
-            res.append(v)
-        return res         
-        
+            b += chunk
+        return b
+
     def retrieveDependeciesVersions(self, version):
         if "DirectDependencies" not in self.__conf:
             return {}
@@ -92,7 +74,7 @@ class Artifactory:
             
             dep = self.__conf["DirectDependencies"][packageName]
 
-            # Extract from IVY
+            versionsExtractor = versioners.factory.create(dep["type"])
             if packageName == "ANY":
                 if dep["type"] == "ivy":
                     uri = "{0}/{1}/{2}/ivy-{2}.xml".format(
@@ -100,7 +82,7 @@ class Artifactory:
                         self.__conf["ArtifactUri"],
                         version).replace("//","/")
                     fullUrl = "{0}/{1}".format(self.__artifactoryUrl,uri)
-                    result[packageName] = '; '.join(self.__extractIvyDependencies(self.__downloadFile(fullUrl)))
+                    result[packageName] = '; '.join(versionsExtractor.extractVersions(self.__downloadFile(fullUrl), fullUrl))
                 else:
                    raise ValueError( "Unsupported dependency type '{0}' for ANY".format(dep["type"]))
             else:
@@ -112,10 +94,10 @@ class Artifactory:
                         version,
                         dep["name"]).replace("//","/")
                     fullUrl = "{0}/{1}".format(self.__artifactoryUrl,uri)
-                    dependencyVersion = self.__extractDllVersion(self.__downloadFile(fullUrl))
-                    if dependencyVersion is None:
+                    dependencyVersions = versionsExtractor.extractVersions(self.__downloadFile(fullUrl), fullUrl)
+                    if dependencyVersions is None:
                         continue
-                    result[packageName] = dependencyVersion
+                    result[packageName] = '; '.join(dependencyVersions)
                 else:
                     raise ValueError( "Unsupported dependency type '{0}'".format(dep[packageName]["type"]))
         
@@ -137,7 +119,7 @@ class Artifactory:
             
         return extractedVersion[0].replace("_",".")
     
-          
+
     def retrievePromotedVersions(self):
         self.__log("Retrieving promoted ({0}) versions {1} ...".format(
             self.__conf["Repository"],

@@ -1,13 +1,24 @@
 import unittest
-import JustReleaseNotes
 from JustReleaseNotes.artifacters import GitHubReleases
-from mocker import Mocker
 import requests
-import os
+import requests_mock
+import sys
 
 class GitHubReleases_Test(unittest.TestCase):
 
-  def test_retrievePromotedVersions(self):
+  def setUp(self):
+    self.__stdoutSaved = sys.stdout
+    try:
+        from StringIO import StringIO
+    except ImportError:
+        from io import StringIO
+    self.__out = StringIO()
+    sys.stdout = self.__out
+
+  def tearDown(self):
+    sys.stdout = self.__stdoutSaved
+
+  def test_retrievePromotedVersionsContainsValidVersions(self):
     requests.packages.urllib3.disable_warnings()
     fileContents = '[{"name": "2.0.1.153", "published_at": "2015-04-24T15:24:29Z"},' \
                    '{"name": "1.0.0.15", "published_at": "2015-03-19T23:19:08Z"}]'
@@ -17,24 +28,30 @@ class GitHubReleases_Test(unittest.TestCase):
                "Url" : "https://api.github.com/repos/cimpress-mcp/PostalCodes.Net/releases"  }
 
     artifacter = GitHubReleases.GitHubReleases(config);
+    with requests_mock.mock() as m:
+        m.get('https://api.github.com/repos/cimpress-mcp/PostalCodes.Net/releases', text=fileContents)
+        promotedVersion = artifacter.retrievePromotedVersions()
+        self.assertIn("1.0.0.15", promotedVersion)
+        self.assertIn("2.0.1.153", promotedVersion)
+        self.assertTrue(2, len(promotedVersion))
+    sys.stdout = self.__stdoutSaved
+    self.assertEquals('GitHub Releases: Retrieving promoted from GitHubReleases at https://api.github.com/repos/cimpress-mcp/PostalCodes.Net/releases ...\n'
+                      'GitHub Releases: Found 2 promoted versions\n',
+                      self.__out.getvalue())
 
-    mocker = Mocker()
+  def test_retrievePromotedVersionsFromEmptyArrayRaises(self):
+    requests.packages.urllib3.disable_warnings()
+    fileContents = '[]'
 
-    result = mocker.mock()
-    result.text
-    mocker.result(fileContents)
+    config = { "Authorization" : "token 5dbf862c5197414138e70c4f3fb458c5f5a58f05",
+               "Provider" : "GitHubReleases",
+               "Url" : "https://api.github.com/repos/cimpress-mcp/PostalCodes.Net/releases"  }
 
-    myget = mocker.replace("requests.get")
-    myget('https://api.github.com/repos/cimpress-mcp/PostalCodes.Net/releases',
-         headers = { "Authorization": "token 5dbf862c5197414138e70c4f3fb458c5f5a58f05"}, verify=False)
-    mocker.result(result)
-
-    mocker.replay()
-    promotedVersion = artifacter.retrievePromotedVersions()
-    self.assertIn("1.0.0.15", promotedVersion)
-    self.assertIn("2.0.1.153", promotedVersion)
-    self.assertTrue(2, len(promotedVersion))
-    mocker.verify()
+    artifacter = GitHubReleases.GitHubReleases(config);
+    with requests_mock.mock() as m:
+        m.get('https://api.github.com/repos/cimpress-mcp/PostalCodes.Net/releases', text=fileContents)
+        with self.assertRaises(ValueError):
+            artifacter.retrievePromotedVersions()
 
 if __name__ == '__main__':
     unittest.main()
