@@ -19,17 +19,20 @@ class GitRepo:
         self.gitDatesByHash = {}
         self.versionsByGitHash = {}
         self.gitHistoryByVersion = {}
-        self.__repo = conf["GitRepositoryUrl"] 
-        self.__packageName = conf["PackageName"]
+        self.__repo = conf["RepositoryUrl"]
+        self.__directory = conf["Directory"]
         self.__repoX = ""
-        self.pathToSave = conf["pathToSave"]
+        self.__versionTagRegex = "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+
+        if "VersionTagRegex" in conf:
+            self.__versionTagRegex = conf["VersionTagRegex"]
         
     def __log(self, message):
         print ("Git: " + message)
         sys.stdout.flush()
         
     def checkout(self):
-        path = os.path.join(self.pathToSave, self.__packageName)
+        path = self.__directory
         if not os.path.isdir(path):
             self.__log("Creating folder at: " + path)
             os.makedirs(path)
@@ -65,14 +68,20 @@ class GitRepo:
             if p not in self.versionsByGitHash:
                 results = results + self.__getParentsListForVersion(p, version, resultsSoFar + results)
         return results
-    
+
+    def processCommit(self, commitHash):
+        self.__processCommit(self.__repoX.commit(commitHash))
+
+    def __processCommit(self, commit):
+        self.gitCommitMessagesByHash[commit.hexsha] = commit.summary + commit.message
+        self.gitCommitsList.append(commit.hexsha)
+        self.gitDatesByHash[commit.hexsha] = commit.authored_date
+        self.setParents(commit)
+
     def retrieveHistory(self):
         self.__log("Retrieving Git history...")        
         for i in self.__repoX.iter_commits('master', max_count=1024):
-            self.gitCommitMessagesByHash[i.hexsha] = i.summary + i.message
-            self.gitCommitsList.append(i.hexsha)
-            self.gitDatesByHash[i.hexsha] = i.authored_date  
-            self.setParents(i)
+            self.__processCommit(i)
         
     def __optimizeHistoryByVersion(self):        
         sortedVersionsInAscendingOrder = [] + self.gitHistoryByVersion.keys()
@@ -91,9 +100,10 @@ class GitRepo:
         
     def retrieveVersionsByGitHash(self, promotedVersionsList):
         self.__log("Retrieving versions (git tags)...")
-        
+
         if len(promotedVersionsList) == 0:
-            raise ValueError("Make sure you first retrieve the promoted version")
+            print("Make sure you first retrieve the promoted version: Promoted versions are empty, thus every tag "
+                  "matching will be considered as released")
         
         tags = self.__repoX.tags
         for t in tags:
@@ -103,8 +113,16 @@ class GitRepo:
                 continue
 
             version = tag.split("/")[-1]
-            if not re.match("^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$", version):
+            p = re.compile(self.__versionTagRegex)
+            m = p.match(version)
+            if not m:
                 continue
+
+            g = m.groups()
+            if len(g)>1:
+                continue;
+            elif len(g) == 1:
+                version = g[0];
 
             if hexsha in self.versionsByGitHash:
                 v1 = version

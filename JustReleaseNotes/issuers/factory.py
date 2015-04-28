@@ -1,9 +1,10 @@
 import importlib
 
-def create(name, conf):
+def create(conf):
     try:
-        module = importlib.import_module("JustReleaseNotes.issuers.{0}".format(name))
-        issuerClass = getattr(module, name)
+        module = importlib.import_module("JustReleaseNotes.issuers.{0}".format(conf["Provider"]))
+        issuerClass = getattr(module, conf["Provider"])
         return issuerClass(conf)
     except:
-        raise Exception("Ticket provider is needed to retrieve ticket information: {0} not found".format(name))
+        raise Exception("Ticket provider is needed to retrieve ticket information: {0} not found, {1}".format(conf["Provider"]))
+

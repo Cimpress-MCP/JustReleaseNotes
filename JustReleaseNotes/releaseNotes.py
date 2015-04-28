@@ -8,22 +8,22 @@ class ReleaseNotes:
     __ticketReplacements = {}
     __ticketProvider = {}
 
-    def __init__(self, conf, ticketProvider, releaseNotesWriter, git, promotedVersionsInfo):
+    def __init__(self, conf, ticketProvider, releaseNotesWriter, repo, promotedVersionsInfo):
         self.__ticketsByVersion = {}
         self.__conf = conf
         self.__Writer = releaseNotesWriter
-        self.__git = git
+        self.__repo = repo
         self.__promotedVersionsInfo = promotedVersionsInfo
         self.__ticketProvider = ticketProvider;
         
     def __computeTicketsByVersion(self):
         currentVersion = "latest"        
         self.__ticketsByVersion[currentVersion] = []
-        for hash in self.__git.gitCommitsList:
-            if hash in self.__git.versionsByGitHash:
-                currentVersion = self.__git.versionsByGitHash[hash] 
+        for hash in self.__repo.gitCommitsList:
+            if hash in self.__repo.versionsByGitHash:
+                currentVersion = self.__repo.versionsByGitHash[hash]
                 self.__ticketsByVersion[currentVersion] = []
-            tickets = self.__ticketProvider.extractTicketsFromMessage(self.__git.gitCommitMessagesByHash[hash])
+            tickets = self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
             self.__ticketsByVersion[currentVersion] = self.__ticketsByVersion[currentVersion] + tickets
      
     def __printVersionBlock(self, version, tickets):        
@@ -41,35 +41,33 @@ class ReleaseNotes:
 
     def generateReleaseNotesByPromotedVersions(self):
         
-        self.__git.checkout()
-        self.__git.retrieveHistory()
-        self.__git.retrieveVersionsByGitHash( list(self.__promotedVersionsInfo.keys()) )
+        self.__repo.checkout()
+        self.__repo.retrieveHistory()
+        self.__repo.retrieveVersionsByGitHash( list(self.__promotedVersionsInfo.keys()) )
         self.__computeTicketsByVersion()
-        
+
         ticketsSoFar = []
-        hashesInVersion = self.__git.gitHistoryByVersion
+        hashesInVersion = self.__repo.gitHistoryByVersion
 
         hashAlreadySeen = []
-        sortedVersions = [] + hashesInVersion.keys();
+        sortedVersions = [] + hashesInVersion.keys()
         sortedVersions.sort(key=lambda s: map(int, s.split('.')))
         
         content = []
-
         for version in sortedVersions:
         
-            if version in self.__promotedVersionsInfo:
+            if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
                 print "Generating info for version " + version
                 
             for hash in hashesInVersion[version]:
                 if hash in hashAlreadySeen:
                     continue
                 hashAlreadySeen = hashAlreadySeen + [hash]
-                if hash in self.__git.gitCommitMessagesByHash:
-                    ticketsSoFar += self.__ticketProvider.extractTicketsFromMessage(self.__git.gitCommitMessagesByHash[hash])
-                else:
-                    print "Missing commit message info for " + hash
+                if hash not in self.__repo.gitCommitMessagesByHash:
+                    self.__repo.processCommit(hash)
+                ticketsSoFar += self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
 
-            if version in self.__promotedVersionsInfo:
+            if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
                 content = content + [self.__printVersionBlock(version, ticketsSoFar)]
                 ticketsSoFar = []                
 

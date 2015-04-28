@@ -47,6 +47,7 @@ Configuration file is in flux. For now it is a json looking something like this:
 	              "Authorization" : ...,
 	              "Url" : ...,
 	              "WebImagesPath" : ...
+	              "TicketRegex" : ...
 	            },
 	            "Releases" : {
 	              "Provider" : <releases provider>,
@@ -54,7 +55,10 @@ Configuration file is in flux. For now it is a json looking something like this:
 	              "ArtifactUri" : ...,
 	              "StorageUrl" : ...
 	            },
-	            "GitRepositoryUrl" : ...,
+	            "Source" : {
+                    "Provider" : <source provider>
+                    "RepositoryUrl" : ...
+                },
 	            "ReleaseNotesWriter" : <notes writer>
 	        }
 	    }
@@ -76,3 +80,7 @@ where
 
 - JiraIssues
 - GitHubIssues
+
+``source provider`` is currently only:
+
+- GitRepo

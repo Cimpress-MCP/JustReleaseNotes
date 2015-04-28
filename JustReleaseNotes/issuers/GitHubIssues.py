@@ -8,11 +8,16 @@ class GitHubIssues:
     
     def __init__(self, conf):
         self.__conf = conf
-        self.__iconMappings = { "closed" : "http://hydra-media.cursecdn.com/wiki.bukkit.org/8/8c/Favicon-github.png?version=3ba18692efbc14e64d1bfd7c9639a0f2",
-                                "open" : "http://hydra-media.cursecdn.com/wiki.bukkit.org/8/8c/Favicon-github.png?version=3ba18692efbc14e64d1bfd7c9639a0f2" }
+        self.__iconMappings = { "issue" : "http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=",
+                                "pull_request" : "https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" }
+        self.__ticketRegex = '#([0-9]+)'
+        if "TicketRegex" in conf:
+            self.__ticketRegex = conf["TicketRegex"]
+
         headers = { 'Authorization': self.__conf["Authorization"] }
         response = requests.get( self.__conf["Url"] + "?filter=all&state=all", headers = headers, verify=False )
         tickets = json.loads(response.text)
+
         for ticketData in tickets:
             ticketNumber = str(ticketData["number"])
             self.__cache[ticketNumber] = ticketData
@@ -50,7 +55,12 @@ class GitHubIssues:
         else:
             title = "Untitled"
 
-        return { "state_icon" : self.__iconMappings[data["state"]],
+        if "pull_request" in data:
+            issueType = "pull_request"
+        else:
+            issueType = "issue"
+
+        return { "issue_type_icon" : self.__iconMappings[issueType],
             "html_url" : data["html_url"],
             "ticket" : "#{0}".format(ticket),
             "title" : title,
@@ -58,7 +68,7 @@ class GitHubIssues:
 
     def extractTicketsFromMessage(self, message):
         message = message.replace("\n", " ").replace("\r", " ").replace("\t", " ");
-        p = re.compile('#([0-9]+)');
+        p = re.compile(self.__ticketRegex)
         results = p.findall(message)
         if len(results) > 0:
             return results

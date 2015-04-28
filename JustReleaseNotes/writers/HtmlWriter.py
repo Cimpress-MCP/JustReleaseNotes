@@ -11,9 +11,12 @@ class HtmlWriter:
     def printVersionBlock(self, deps, version, date, tickets):
         data = [
             "<div style=\"width:100%; border: 0px\">",
-            "<a name=\"" + version + "\"></a>",
-            "<h2>" + version + "<sup><small style=\"font-size:10px\"><i> " + date + "</i></small></sup></h2>",
-            ]
+            "<a name=\"" + version + "\"></a>"]
+
+        data.append("<h2>" + version)
+        if date != 'N/A':
+            data.append("<sup><small style=\"font-size:10px\"><i> " + date + "</i></small></sup>")
+        data.append("</h2>")
 
         if len(deps.keys()) > 0:
             data.append('<div style="background: #eee; "><i>Components: ')
@@ -22,9 +25,12 @@ class HtmlWriter:
 
         data.append("<ul>")
         uniqTickets = sorted(set(tickets), reverse=True)
+
+        appendStabilityImprovements = False
+
         for ticket in uniqTickets:
             if ticket == "NULL":
-                data.append("<li style=\"font-size:14px\">Stability improvements</li>")
+                appendStabilityImprovements = True
             else:
                 ticketInfo = self.__ticketProvider.getTicketInfo(ticket)
                 if ticketInfo != None:
@@ -41,6 +47,9 @@ class HtmlWriter:
                     if "priority_icon" in ticketInfo:
                         imgHtml += imgFormat.format("Priority", ticketInfo["priority_icon"])
                     data.append('<li style="font-size:14px">{0}<a href="{3}">{1}</a> {2}</li>'.format(imgHtml, ticketInfo["ticket"], title , ticketInfo["html_url"]))
+
+        if appendStabilityImprovements:
+            data.append("<li style=\"font-size:14px\">Stability improvements</li>")
 
         data += ["</ul>", "</div>", ""]
 

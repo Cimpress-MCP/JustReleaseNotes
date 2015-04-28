@@ -1,7 +1,6 @@
-import os, sys, re, subprocess
+import sys, re
 import requests
 import json
-import getpass
 
 class JiraIssues:
     __restSearchUrl = None
@@ -12,6 +11,9 @@ class JiraIssues:
         self.__restSearchUrl = conf["Url"]
         self.__jiraAuthorization = conf["Authorization"]
         self.__conf = conf
+        self.__ticketRegex = '([A-Z]{2,5}-[0-9]+)'
+        if "TicketRegex" in conf:
+            self.__ticketRegex = conf["TicketRegex"]
 
     def __log(self, message):
         print ("Jira: " + message)
@@ -57,12 +59,15 @@ class JiraIssues:
         return ret
 
     def __fieldIcon(self, f):
-        parts = f["iconUrl"].split("/")
-        return '{0}/{1}'.format(self.__conf["WebImagesPath"], parts[len(parts)-1], f["name"])
+        if "WebImagesPath" in self.__conf:
+            parts = f["iconUrl"].split("/")
+            return '{0}/{1}'.format(self.__conf["WebImagesPath"], parts[len(parts)-1], f["name"])
+        else:
+            return f["iconUrl"]
 
     def extractTicketsFromMessage(self, message):
         message = message.replace("\n", " ").replace("\r", " ").replace("\t", " ")
-        p = re.compile('([A-Z]{2,5}-[0-9]{5})')
+        p = re.compile(self.__ticketRegex)
         results = p.findall(message)
         if len(results) > 0:
             return results
