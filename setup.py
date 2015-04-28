@@ -17,7 +17,7 @@ setup(name='JustReleaseNotes',
       author_email='ivan@stanishev.net, rafal@nowosielski.link',
       license='Apache License 2.0',
       packages=['JustReleaseNotes', 'JustReleaseNotes.artifacters', 'JustReleaseNotes.issuers',
-                'JustReleaseNotes.artifacters.versioners','JustReleaseNotes.writers'],
+                'JustReleaseNotes.artifacters.versioners','JustReleaseNotes.writers', 'JustReleaseNotes.sourcers'],
       install_requires=[
           'requests',
           'gitpython'
