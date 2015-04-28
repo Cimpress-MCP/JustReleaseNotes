@@ -1,12 +1,15 @@
 language: python
 python:
-  - 2.7
-  - 3.3
+- 2.7
+- 3.3
 install:
-  - python setup.py install
-  - pip install -r requirements.txt
+- python setup.py install
+- pip install -r requirements.txt
 script:
-  - python unit-tests.py
-  - coverage run --source=JustReleaseNotes unit-tests.py
-after_success:
-  coveralls
+- python unit-tests.py
+- coverage run --source=JustReleaseNotes unit-tests.py
+after_success: coveralls
+notifications:
+  hipchat:
+    rooms:
+        secure: C3Fl9ED65V9XZ96SKI+P4kN3P9iQKZxr+nvCalERdrxj4osAAV+AUxeKpPe+BuK2VpPStcPgVmS3/Ja4wjhQr8h0zN/REc+jwItGN6kKUlITWKyTyFLSSzQJCJ/KH6+iGYnJ1QIxoVZ6qOMqTvnzGK/wThIQAZfPwjQuUxp6csY=
