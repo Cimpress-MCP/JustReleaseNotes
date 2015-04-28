@@ -3,17 +3,20 @@ from JustReleaseNotes.artifacters import GitHubReleases
 import requests
 import requests_mock
 import sys
-import io
 
 class GitHubReleases_Test(unittest.TestCase):
 
   def setUp(self):
-     self.__stdoutSaved = sys.stdout
-     self.__out = io.TextIOWrapper(io.BytesIO(), 'UTF-8')
-     sys.stdout = self.__out
+    self.__stdoutSaved = sys.stdout
+    try:
+        from StringIO import StringIO
+    except ImportError:
+        from io import StringIO
+    self.__out = StringIO()
+    sys.stdout = self.__out
 
   def tearDown(self):
-     sys.stdout = self.__stdoutSaved
+    sys.stdout = self.__stdoutSaved
 
   def test_retrievePromotedVersionsContainsValidVersions(self):
     requests.packages.urllib3.disable_warnings()
@@ -31,10 +34,10 @@ class GitHubReleases_Test(unittest.TestCase):
         self.assertIn("1.0.0.15", promotedVersion)
         self.assertIn("2.0.1.153", promotedVersion)
         self.assertTrue(2, len(promotedVersion))
-    #output = self.__out.getvalue().strip()
-    #self.assertEquals('GitHub Releases: Retrieving promoted from GitHubReleases at https://api.github.com/repos/cimpress-mcp/PostalCodes.Net/releases ...\n'
-    #                  'GitHub Releases: Found 2 promoted versions',
-    #                  output)
+    sys.stdout = self.__stdoutSaved
+    self.assertEquals('GitHub Releases: Retrieving promoted from GitHubReleases at https://api.github.com/repos/cimpress-mcp/PostalCodes.Net/releases ...\n'
+                      'GitHub Releases: Found 2 promoted versions\n',
+                      self.__out.getvalue())
 
   def test_retrievePromotedVersionsFromEmptyArrayRaises(self):
     requests.packages.urllib3.disable_warnings()

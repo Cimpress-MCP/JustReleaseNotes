@@ -14,9 +14,7 @@ class GitHubReleases:
 
     def __log(self, message):
         log = "GitHub Releases: " + message
-        if (hasattr(log, "decode")):
-            log = str.decode(log,'UTF-8')
-        sys.stdout.write(log)
+        print(log)
         sys.stdout.flush()
 
     def retrievePromotedVersions(self):
