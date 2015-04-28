@@ -57,13 +57,10 @@ class Artifactory:
         if r.status_code != 200:
             return None
 
-        tempDir = tempfile.mkdtemp();
-        fileName = os.path.join(tempDir, os.path.basename(uri));
-        f = open(fileName, "w")
+        b = bytes()
         for chunk in r.iter_content(1024):
-            f.write(chunk)
-        f.close()
-        return fileName
+            b += chunk
+        return b
 
     def retrieveDependeciesVersions(self, version):
         if "DirectDependencies" not in self.__conf:
@@ -85,7 +82,7 @@ class Artifactory:
                         self.__conf["ArtifactUri"],
                         version).replace("//","/")
                     fullUrl = "{0}/{1}".format(self.__artifactoryUrl,uri)
-                    result[packageName] = '; '.join(versionsExtractor.extractVersions(self.__downloadFile(fullUrl)))
+                    result[packageName] = '; '.join(versionsExtractor.extractVersions(self.__downloadFile(fullUrl), fullUrl))
                 else:
                    raise ValueError( "Unsupported dependency type '{0}' for ANY".format(dep["type"]))
             else:
@@ -97,7 +94,7 @@ class Artifactory:
                         version,
                         dep["name"]).replace("//","/")
                     fullUrl = "{0}/{1}".format(self.__artifactoryUrl,uri)
-                    dependencyVersions = versionsExtractor.extractVersions(self.__downloadFile(fullUrl))
+                    dependencyVersions = versionsExtractor.extractVersions(self.__downloadFile(fullUrl), fullUrl)
                     if dependencyVersions is None:
                         continue
                     result[packageName] = '; '.join(dependencyVersions)

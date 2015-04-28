@@ -2,9 +2,8 @@ import xml.etree.ElementTree as ET
 
 class ivy:
 
-    def extractVersions(self, fileName):
-        tree = ET.parse(fileName)
-        root = tree.getroot()
+    def extractVersions(self, fileContent, fileName):
+        root = ET.fromstring(fileContent)
         deps = root.findall('./dependencies/dependency')
         res = []
         for dep in deps:
