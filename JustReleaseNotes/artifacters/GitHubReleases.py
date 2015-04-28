@@ -1,6 +1,7 @@
 import sys
 import requests
 import json
+import io
 
 class GitHubReleases:
     __defaultVersionRegex = "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
@@ -12,7 +13,10 @@ class GitHubReleases:
         self.__conf = conf
 
     def __log(self, message):
-        print ("GitHub Releases: " + message)
+        log = "GitHub Releases: " + message
+        if (hasattr(log, "decode")):
+            log = str.decode(log,'UTF-8')
+        sys.stdout.write(log)
         sys.stdout.flush()
 
     def retrievePromotedVersions(self):
