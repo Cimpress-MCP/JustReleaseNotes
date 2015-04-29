@@ -13,7 +13,7 @@ from issuers import factory
 from writers import factory
 from artifacters import factory
 from releaseNotes import *
-
+from utils import EnvReplacer
 
 def main():
     parser = argparse.ArgumentParser(prog="just_release", description='Instruments release process.')
@@ -28,7 +28,7 @@ def main():
         else:
             file = open("config.json", 'r')
         fileContents = file.read()
-        releaseNotesConfig = json.loads(fileContents)
+        releaseNotesConfig = EnvReplacer.replace(json.loads(fileContents))
         currentDir = os.getcwd()
         if not os.path.isabs(releaseNotesConfig["pathToSave"]):
             releaseNotesConfig["pathToSave"] = os.path.join(currentDir, releaseNotesConfig["pathToSave"])
