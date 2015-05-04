@@ -42,24 +42,24 @@ Configuration file is in flux. For now it is a json looking something like this:
         "packages" : {
             <package name> : {
                 "Issues" : {
-                  "Provider" : <issues provider>,
-                  "HtmlUrl" : ...,
-                  "Authorization" : ...,
-                  "Url" : ...,
-                  "WebImagesPath" : ...
-                  "TicketRegex" : ...
+                    "Provider" : <issues provider>,
+                    "HtmlUrl" : ...,
+                    "Authorization" : ...,
+                    "Url" : ...,
+                    "WebImagesPath" : ...
+                    "TicketRegex" : ...
                 },
                 "Releases" : {
-                  "Provider" : <releases provider>,
-                  "Repository" : ...,
-                  "ArtifactUri" : ...,
-                  "StorageUrl" : ...
+                    "Provider" : <releases provider>,
+                    "Repository" : ...,
+                    "ArtifactUri" : ...,
+                    "StorageUrl" : ...
                 },
                 "Source" : {
                     "Provider" : <source provider>
                     "RepositoryUrl" : ...
                 },
-            "ReleaseNotesWriter" : <notes writer>
+                "ReleaseNotesWriter" : <notes writer>
             }
         }
     }
@@ -88,9 +88,9 @@ where
 You can also use environment variables using the following syntax::
 
     {
-    ...
-    "key" : "aaa ENV[xxx] bbb"
-    ...
+        ...
+        "key" : "aaa ENV[xxx] bbb"
+        ...
     }
 
 In the above example, ENV[xxx] will be replaced with the value of 'xxx' variable
