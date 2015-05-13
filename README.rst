@@ -84,3 +84,13 @@ where
 ``source provider`` is currently only:
 
 - GitRepo
+
+You can also use environment variables using the following syntax::
+
+    {
+    ...
+    "key" : "aaa ENV[xxx] bbb"
+    ...
+    }
+
+In the above example, ENV[xxx] will be replaced with the value of 'xxx' variable
