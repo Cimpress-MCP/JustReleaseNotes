@@ -3,8 +3,8 @@ import re
 import json
 import tempfile
 import os
-import versioners
-from versioners import factory
+import JustReleaseNotes.artifacters.versioners
+from JustReleaseNotes.artifacters.versioners import factory
 import requests
 
 
@@ -74,7 +74,7 @@ class Artifactory:
             
             dep = self.__conf["DirectDependencies"][packageName]
 
-            versionsExtractor = versioners.factory.create(dep["type"])
+            versionsExtractor = JustReleaseNotes.artifacters.versioners.factory.create(dep["type"])
             if packageName == "ANY":
                 if dep["type"] == "ivy":
                     uri = "{0}/{1}/{2}/ivy-{2}.xml".format(
@@ -124,11 +124,13 @@ class Artifactory:
         self.__log("Retrieving promoted ({0}) versions {1} ...".format(
             self.__conf["Repository"],
             self.__conf["ArtifactUri"]))
-            
-        uri = "{0}/{1}/{2}".format(
-            self.__artifactoryUrl,
-            self.__conf["Repository"],
-            self.__conf["ArtifactUri"])
+
+        uri = "{0}/{1}".format(self.__artifactoryUrl,self.__conf["Repository"]);
+        artifactPath=self.__conf["ArtifactUri"];
+        if (artifactPath[0] == "/"):
+            uri += artifactPath
+        else:
+            uri += "/" + artifactPath
             
         r = requests.get( uri )
         response = json.loads(r.text)
