@@ -1,8 +1,9 @@
 import sys, re
 import requests
 import json
+from JustReleaseNotes.issuers import BaseIssues
 
-class JiraIssues:
+class JiraIssues(BaseIssues.BaseIssues):
     __restSearchUrl = None
     __jiraAuthorization = None
     __cache = {}
@@ -11,9 +12,9 @@ class JiraIssues:
         self.__restSearchUrl = conf["Url"]
         self.__jiraAuthorization = conf["Authorization"]
         self.__conf = conf
-        self.__ticketRegex = '([A-Z]{2,5}-[0-9]+)'
+        self.ticketRegex = '([A-Z]{2,5}-[0-9]+)'
         if "TicketRegex" in conf:
-            self.__ticketRegex = conf["TicketRegex"]
+            self.ticketRegex = conf["TicketRegex"]
 
     def __log(self, message):
         print ("Jira: " + message)
@@ -64,12 +65,3 @@ class JiraIssues:
             return '{0}/{1}'.format(self.__conf["WebImagesPath"], parts[len(parts)-1], f["name"])
         else:
             return f["iconUrl"]
-
-    def extractTicketsFromMessage(self, message):
-        message = message.replace("\n", " ").replace("\r", " ").replace("\t", " ")
-        p = re.compile(self.__ticketRegex)
-        results = p.findall(message)
-        if len(results) > 0:
-            return results
-        else:
-            return ["NULL"]

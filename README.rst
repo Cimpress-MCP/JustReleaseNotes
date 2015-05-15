@@ -36,33 +36,33 @@ Configuration
 
 Configuration file is in flux. For now it is a json looking something like this::
 
-	{
-	    "pathToSave" : <output path>,
-	
-	    "packages" : {
-	        <package name> : {
-	            "Issues" : {
-	              "Provider" : <issues provider>,
-	              "HtmlUrl" : ...,
-	              "Authorization" : ...,
-	              "Url" : ...,
-	              "WebImagesPath" : ...
-	              "TicketRegex" : ...
-	            },
-	            "Releases" : {
-	              "Provider" : <releases provider>,
-	              "Repository" : ...,
-	              "ArtifactUri" : ...,
-	              "StorageUrl" : ...
-	            },
-	            "Source" : {
+    {
+       "pathToSave" : <output path>,
+
+        "packages" : {
+            <package name> : {
+                "Issues" : {
+                  "Provider" : <issues provider>,
+                  "HtmlUrl" : ...,
+                  "Authorization" : ...,
+                  "Url" : ...,
+                  "WebImagesPath" : ...
+                  "TicketRegex" : ...
+                },
+                "Releases" : {
+                  "Provider" : <releases provider>,
+                  "Repository" : ...,
+                  "ArtifactUri" : ...,
+                  "StorageUrl" : ...
+                },
+                "Source" : {
                     "Provider" : <source provider>
                     "RepositoryUrl" : ...
                 },
-	            "ReleaseNotesWriter" : <notes writer>
-	        }
-	    }
-	}
+            "ReleaseNotesWriter" : <notes writer>
+            }
+        }
+    }
 
 where
 

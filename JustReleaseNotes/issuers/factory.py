@@ -6,5 +6,5 @@ def create(conf):
         issuerClass = getattr(module, conf["Provider"])
         return issuerClass(conf)
     except:
-        raise Exception("Ticket provider is needed to retrieve ticket information: {0} not found, {1}".format(conf["Provider"]))
+        raise Exception("Ticket provider is needed to retrieve ticket information: {0} not found".format(conf["Provider"]))
 
