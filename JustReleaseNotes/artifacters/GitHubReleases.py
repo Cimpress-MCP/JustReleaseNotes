@@ -26,7 +26,6 @@ class GitHubReleases:
         r = requests.get( self.__conf["Url"], headers = headers, verify=False )
 
         response = json.loads(r.text)
-        
         for release in response:
             version = release["name"]
             self.__promotedVersions[version] = {

@@ -30,7 +30,7 @@ class MarkdownWriter:
 
                     iconPart = ""
                     if "issue_type_icon" in ticketInfo:
-                        iconPart = "<img src=\"{1}\" width=16 height=16></img>".format(ticketInfo["issue_type_icon"])
+                        iconPart = "<img src=\"{0}\" width=16 height=16></img>".format(ticketInfo["issue_type_icon"])
                     data.append("* {0} [{1}]({3}) {2}".format(iconPart, ticketInfo["ticket"], title, ticketInfo["html_url"]) )
 
         if appendStabilityImprovements:

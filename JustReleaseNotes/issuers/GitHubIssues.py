@@ -1,8 +1,9 @@
-import sys, re
+import sys
 import requests
 import json
+from JustReleaseNotes.issuers import BaseIssues
 
-class GitHubIssues:
+class GitHubIssues(BaseIssues.BaseIssues):
     __conf = None
     __cache = {}
     
@@ -10,9 +11,9 @@ class GitHubIssues:
         self.__conf = conf
         self.__iconMappings = { "issue" : "http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=",
                                 "pull_request" : "https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" }
-        self.__ticketRegex = '#([0-9]+)'
+        self.ticketRegex = '#([0-9]+)'
         if "TicketRegex" in conf:
-            self.__ticketRegex = conf["TicketRegex"]
+            self.ticketRegex = conf["TicketRegex"]
 
         headers = { 'Authorization': self.__conf["Authorization"] }
         response = requests.get( self.__conf["Url"] + "?filter=all&state=all", headers = headers, verify=False )
@@ -66,11 +67,3 @@ class GitHubIssues:
             "title" : title,
             "embedded_link" : embedded_links }
 
-    def extractTicketsFromMessage(self, message):
-        message = message.replace("\n", " ").replace("\r", " ").replace("\t", " ");
-        p = re.compile(self.__ticketRegex)
-        results = p.findall(message)
-        if len(results) > 0:
-            return results
-        else:
-            return ["NULL"]
