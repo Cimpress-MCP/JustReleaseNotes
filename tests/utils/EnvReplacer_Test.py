@@ -43,11 +43,6 @@ class EnvParser_Test(unittest.TestCase):
         conf = "env[a] Env[b] ENV[c]"
         self.assertEqual("1 2 3", EnvReplacer.replace(conf))
 
-    def test_stringWithMixedCaseEnvKeyIsReplaced(self):
-        os.environ["foo"] = "1"
-        conf = "ENV[FOO] ENV[Foo] ENV[foo]"
-        self.assertEqual("1 1 1", EnvReplacer.replace(conf))
-
     def test_dictWithEnvParsedCorrectly(self):
         os.environ['abc'] = 'xyz'
         os.environ['ab_12'] = "xy99"
