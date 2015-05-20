@@ -23,16 +23,9 @@ def __replaceList(config):
     return [replace(x) for x in config]
 
 
-def __replaceStr(strValue):
-    if type(strValue) is str:
-        matches = re.findall('ENV\[([0-9a-zA-Z_]+)\]', strValue, re.IGNORECASE)
-        if matches is None or len(matches) == 0:
-            return strValue
-        else:
-            r = strValue
-            for i in matches:
-                insensitive_env = re.compile(re.escape("ENV[{0}]".format(i)), re.IGNORECASE)
-                r = insensitive_env.sub(os.environ[i], r)
-            return r
-    else:
-        return strValue
+def __replaceStr(str):
+    return re.sub(r'ENV\[(\w+)\]', __findEnvKey, str, flags=re.IGNORECASE)
+
+
+def __findEnvKey(match):
+    return os.environ[match.group(1)]

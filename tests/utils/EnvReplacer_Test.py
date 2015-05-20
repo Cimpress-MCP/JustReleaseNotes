@@ -24,6 +24,25 @@ class EnvParser_Test(unittest.TestCase):
         }
         self.assertEqual(conf, EnvReplacer.replace(conf))
 
+    def test_stringWithNonExistentEnvVariableRaises(self):
+        conf = "ENV[non_existing_env_key]"
+        self.assertRaises(KeyError, EnvReplacer.replace, conf)
+
+    def test_stringWithEmptyEnvKeyStaysTheSame(self):
+        conf = "ENV[]"
+        self.assertEqual(conf, EnvReplacer.replace(conf))
+
+    def test_stringWithInvalidEnvKeyStaysTheSame(self):
+        conf = "ENV[ ]"
+        self.assertEqual(conf, EnvReplacer.replace(conf))
+
+    def test_stringWithMixedCaseEnvIsReplaced(self):
+        os.environ["a"] = "1"
+        os.environ["b"] = "2"
+        os.environ["c"] = "3"
+        conf = "env[a] Env[b] ENV[c]"
+        self.assertEqual("1 2 3", EnvReplacer.replace(conf))
+
     def test_dictWithEnvParsedCorrectly(self):
         os.environ['abc'] = 'xyz'
         os.environ['ab_12'] = "xy99"
