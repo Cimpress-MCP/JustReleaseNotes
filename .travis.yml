@@ -12,4 +12,4 @@ after_success: coveralls
 notifications:
   hipchat:
     rooms:
-      secure: YB8OoL0Fc4JKtA6AjTeiZTlD0IKvJs2kSRPsi5DCxWtK4OsVLRcbuJUNnc96SAMcyvA3qWzVPlfJ7mDO5j2+XwJlNWuqopJgzUQNBat7adD2dY1C2xsZPR7dkkquM/UOLKnN1gCVsncCj5ZDNZQBAI0e9YVS2nSRWCPtC4UTK8w=
+      secure: cAhDu6D70JbA1FKcow0P+f0Ph+ivHvX5fnJymnbQBhnyhhQglHl/cd+gJV4eAzaI0GZTarfP9QDouFQQ9DNdc5iW/3FouMcKWFahf4pulA79w3hXXVMH84J6hLrXi+r4vZ9+AQ7Ga6d7Tqw9N4/ceSIImGEoTfkTas8AlTAMnrg=
