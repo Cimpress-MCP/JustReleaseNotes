@@ -15,4 +15,4 @@ class factory_Test(unittest.TestCase):
 
     def test_failsIfIssuerUnknown(self):
         with self.assertRaises(Exception):
-            JustReleaseNotes.issuers.writers.factory.create("abrakadabra", None)
+            JustReleaseNotes.writers.writers.factory.create("abrakadabra", None)
