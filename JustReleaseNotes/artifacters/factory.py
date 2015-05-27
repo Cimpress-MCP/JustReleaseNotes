@@ -1,5 +1,4 @@
 import importlib
-import GitHubReleases
 
 def create(conf):
     try:
