@@ -25,7 +25,7 @@ class MarkdownWriter:
                 if ticketInfo != None:
                     title = ticketInfo["title"]
                     if "embedded_link" in ticketInfo:
-                        for ticket, link in ticketInfo["embedded_link"].iteritems():
+                        for ticket, link in list(ticketInfo["embedded_link"].items()):
                             title = re.sub(ticket, "[{1}]({0})".format(link, ticket), title)
 
                     iconPart = ""

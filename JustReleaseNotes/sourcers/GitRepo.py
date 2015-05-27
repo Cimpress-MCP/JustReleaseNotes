@@ -84,8 +84,8 @@ class GitRepo:
             self.__processCommit(i)
         
     def __optimizeHistoryByVersion(self):        
-        sortedVersionsInAscendingOrder = [] + self.gitHistoryByVersion.keys()
-        sortedVersionsInAscendingOrder.sort(key=lambda s: map(int, s.split('.')), reverse=False)
+        sortedVersionsInAscendingOrder = [] + list(self.gitHistoryByVersion.keys())
+        sortedVersionsInAscendingOrder.sort(key=lambda s: list(map(int, s.split('.'))), reverse=False)
         
         # remove commits part of newer versions if they exists in older one        
         hashUsedForVersion = {}

@@ -4,15 +4,15 @@ import argparse
 
 import requests
 
-import artifacters
-import writers
-import issuers
-import sourcers
-from sourcers import factory
-from issuers import factory
-from writers import factory
-from artifacters import factory
-from releaseNotes import *
+import JustReleaseNotes.artifacters
+import JustReleaseNotes.writers
+import JustReleaseNotes.issuers
+import JustReleaseNotes.sourcers
+from JustReleaseNotes.sourcers import factory
+from JustReleaseNotes.issuers import factory
+from JustReleaseNotes.writers import factory
+from JustReleaseNotes.artifacters import factory
+from JustReleaseNotes.releaseNotes import *
 from utils import EnvReplacer
 
 def main():
@@ -36,18 +36,18 @@ def main():
         for packageName, conf in releaseNotesConfig["packages"].items():
             if "Releases" in conf:
                 releasesConf = conf["Releases"]
-                promotedVersionsInfo = artifacters.factory.create(releasesConf).retrievePromotedVersions()
+                promotedVersionsInfo = JustReleaseNotes.artifacters.factory.create(releasesConf).retrievePromotedVersions()
             else:
                 print ("No artifacter configured: every version tag will be considered a valid release")
                 promotedVersionsInfo = {}
 
             issuesConf = conf["Issues"]
-            ticketProvider = issuers.factory.create(issuesConf)
+            ticketProvider = JustReleaseNotes.issuers.factory.create(issuesConf)
 
             directory = os.path.join(releaseNotesConfig["pathToSave"],packageName)
             conf["Source"]["Directory"] = directory
-            repo = sourcers.factory.create(conf["Source"])
-            writer = writers.factory.create(conf["ReleaseNotesWriter"], ticketProvider)
+            repo = JustReleaseNotes.sourcers.factory.create(conf["Source"])
+            writer = JustReleaseNotes.writers.factory.create(conf["ReleaseNotesWriter"], ticketProvider)
 
             generator = ReleaseNotes(conf, ticketProvider, writer, repo, promotedVersionsInfo)
             releaseNotes = generator.generateReleaseNotesByPromotedVersions()
