@@ -9,8 +9,9 @@ class GitHubIssues(BaseIssues.BaseIssues):
     
     def __init__(self, conf):
         self.__conf = conf
-        self.__iconMappings = { "issue" : "http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=",
-                                "pull_request" : "https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" }
+        self.__iconMappings = dict(
+            issue="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=",
+            pull_request="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625")
         self.ticketRegex = '#([0-9]+)'
         if "TicketRegex" in conf:
             self.ticketRegex = conf["TicketRegex"]

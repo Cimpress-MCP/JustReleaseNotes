@@ -36,8 +36,8 @@ class HtmlWriter:
                 if ticketInfo != None:
                     title = ticketInfo["title"]
                     if "embedded_link" in ticketInfo:
-                        for ticket, link in ticketInfo["embedded_link"].iteritems():
-                            title = re.sub(ticket, "<a href='{0}'>{1}</a>".format(link, ticket), title)
+                        for ticket, link in list(ticketInfo["embedded_link"].items()):
+                            title = re.sub(ticket, "<a href=\"{0}\">{1}</a>".format(link, ticket), title)
                     imgFormat = '<img src="{1}" alt="{0}" width="16" height="16" style="padding-right: 5px"></img>'
                     imgHtml = ""
                     if "state_icon" in ticketInfo:

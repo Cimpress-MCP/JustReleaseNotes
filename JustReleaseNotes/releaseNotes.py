@@ -50,14 +50,14 @@ class ReleaseNotes:
         hashesInVersion = self.__repo.gitHistoryByVersion
 
         hashAlreadySeen = []
-        sortedVersions = [] + hashesInVersion.keys()
-        sortedVersions.sort(key=lambda s: map(int, s.split('.')))
+        sortedVersions = [] + list(hashesInVersion.keys())
+        sortedVersions.sort(key=lambda s: list(map(int, s.split('.'))))
         
         content = []
         for version in sortedVersions:
         
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
-                print "Generating info for version " + version
+                print("Generating info for version " + version)
                 
             for hash in hashesInVersion[version]:
                 if hash in hashAlreadySeen:
