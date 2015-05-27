@@ -5,7 +5,7 @@ from JustReleaseNotes.artifacters.versioners import factory
 
 class GitHubReleases_Test(unittest.TestCase):
 
-  def test_retrievePromotedVersionsContainsValidVersions(self):
+  def test_retrievePromotedVersionsContainsValidVersionsWithNoDependencies(self):
 
     fileContents = '<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
                    '<dependencies>' \
@@ -16,7 +16,7 @@ class GitHubReleases_Test(unittest.TestCase):
     versions = versioner.extractVersions(fileContents, "Ivy.xml")
     self.assertEqual(0, len(versions))
 
-  def test_retrievePromotedVersionsContainsValidVersions(self):
+  def test_retrievePromotedVersionsContainsValidVersionsWithDependencies(self):
 
     fileContents = '<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
                    '<dependencies>' \
@@ -30,7 +30,7 @@ class GitHubReleases_Test(unittest.TestCase):
     self.assertEqual(1, len(versions))
 
 
-  def test_retrievePromotedVersionsContainsValidVersions(self):
+  def test_retrievePromotedVersionsContainsValidVersionsWithWeirdDependencies(self):
 
     fileContents = '<ivy-module version="1.0"><info organisation="org.apache" module="dependee"/>' \
                    '<dependencies>' \
