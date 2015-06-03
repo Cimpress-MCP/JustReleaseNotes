@@ -1,10 +1,5 @@
-import importlib
+import JustReleaseNotes
+from JustReleaseNotes import factory
 
 def create(conf):
-    try:
-        module = importlib.import_module("JustReleaseNotes.issuers.{0}".format(conf["Provider"]))
-        issuerClass = getattr(module, conf["Provider"])
-        return issuerClass(conf)
-    except:
-        raise Exception("Ticket provider is needed to retrieve ticket information: {0} not found".format(conf["Provider"]))
-
+    return JustReleaseNotes.factory.createWithConfig("JustReleaseNotes.issuers", conf["Provider"], conf)
