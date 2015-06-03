@@ -5,6 +5,7 @@ class GitRepo:
     __repo = ""
     __repoX = ""
     __packageName = ""
+    __remote = "origin"
     
     gitCommitsList = []
     gitCommitMessagesByHash = {}
@@ -26,6 +27,9 @@ class GitRepo:
 
         if "VersionTagRegex" in conf:
             self.__versionTagRegex = conf["VersionTagRegex"]
+
+        if "Remote" in conf:
+            self.__remote = conf["Remote"]
         
     def __log(self, message):
         print ("Git: " + message)
@@ -42,7 +46,7 @@ class GitRepo:
             self.__repoX = Repo.clone_from(self.__repo, path)
         except:
             self.__repoX = Repo(path)
-        o = self.__repoX.remotes.origin
+        o = self.__repoX.remotes[self.__remote];
         o.pull()
 
     def setParents(self, commit):

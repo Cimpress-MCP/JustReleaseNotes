@@ -58,6 +58,7 @@ Configuration file is in flux. For now it is a json looking something like this:
                 "Source" : {
                     "Provider" : <source provider>
                     "RepositoryUrl" : ...
+                    "Remote" : ...
                 },
                 "ReleaseNotesWriter" : <notes writer>
             }
