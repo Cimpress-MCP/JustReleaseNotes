@@ -1,9 +1,5 @@
-import importlib
+import JustReleaseNotes
+from JustReleaseNotes import factory
 
 def create(conf):
-    try:
-        module = importlib.import_module("JustReleaseNotes.artifacters.{0}".format(conf["Provider"]))
-        artifacterClass = getattr(module, conf["Provider"])
-        return artifacterClass(conf)
-    except:
-        raise Exception("Artifacts provider is needed to retrieve deployed versions: {0} was not found".format(conf["Provider"]))
+    return JustReleaseNotes.factory.createWithConfig("JustReleaseNotes.artifacters", conf["Provider"], conf)
