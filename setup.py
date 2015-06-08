@@ -9,7 +9,7 @@ except:
     long_description = description
 
 setup(name='JustReleaseNotes',
-      version='0.1.0',
+      version='0.1.2',
       description='Release notes generator package',
       long_description=long_description,
       url='https://github.com/Cimpress-MCP/JustReleaseNotes',
@@ -17,7 +17,8 @@ setup(name='JustReleaseNotes',
       author_email='ivan@stanishev.info, rafal@nowosielski.link',
       license='Apache License 2.0',
       packages=['JustReleaseNotes', 'JustReleaseNotes.artifacters', 'JustReleaseNotes.issuers',
-                'JustReleaseNotes.artifacters.versioners','JustReleaseNotes.writers', 'JustReleaseNotes.sourcers'],
+                'JustReleaseNotes.artifacters.versioners','JustReleaseNotes.writers', 'JustReleaseNotes.sourcers',
+                'JustReleaseNotes.utils'],
       install_requires=[
           'requests',
           'gitpython'
