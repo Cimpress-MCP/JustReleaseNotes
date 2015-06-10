@@ -6,6 +6,7 @@ class GitRepo:
     __repoX = ""
     __packageName = ""
     __remote = "origin"
+    __branch = "master"
     
     gitCommitsList = []
     gitCommitMessagesByHash = {}
@@ -30,6 +31,9 @@ class GitRepo:
 
         if "Remote" in conf:
             self.__remote = conf["Remote"]
+
+        if "Branch" in conf:
+            self.__branch = conf["Branch"]
         
     def __log(self, message):
         print ("Git: " + message)
@@ -84,7 +88,7 @@ class GitRepo:
 
     def retrieveHistory(self):
         self.__log("Retrieving Git history...")        
-        for i in self.__repoX.iter_commits('master', max_count=1024):
+        for i in self.__repoX.iter_commits(self.__branch, max_count=1024):
             self.__processCommit(i)
         
     def __optimizeHistoryByVersion(self):        

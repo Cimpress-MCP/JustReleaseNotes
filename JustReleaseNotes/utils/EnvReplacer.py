@@ -6,7 +6,7 @@ def replace(config):
         return __replaceDict(config)
     elif type(config) is list:
         return __replaceList(config)
-    elif type(config) is str:
+    elif type(config) is str or type(config) is unicode:
         return __replaceStr(config)
     else:
         return config

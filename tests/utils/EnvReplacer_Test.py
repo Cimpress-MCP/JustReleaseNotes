@@ -65,5 +65,25 @@ class EnvParser_Test(unittest.TestCase):
         }
         self.assertEqual(expectedConf, EnvReplacer.replace(conf))
 
+    def test_dictWithUnicodeEnvRaplacedCorrectly(self):
+        os.environ['abc'] = 'xyz'
+        os.environ['ab_12'] = "xy99"
+        os.environ['AbAb'] = "ZZZ"
+        conf = {
+            unicode("a") : "ENV[abc]",
+            "c" : {
+                unicode("x") : "env[ab_12]",
+                unicode("d") : "Env[AbAb] x eNV[AbAb]"
+            }
+        }
+        expectedConf = {
+            u"a" : "xyz",
+            "c" : {
+                u"x" : "xy99",
+                u"d" : "ZZZ x ZZZ"
+            }
+        }
+        self.assertEqual(expectedConf, EnvReplacer.replace(conf))
+
 if __name__ == '__main__':
     unittest.main()
