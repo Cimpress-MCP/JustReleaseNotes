@@ -6,11 +6,12 @@ def replace(config):
         return __replaceDict(config)
     elif type(config) is list:
         return __replaceList(config)
-    elif type(config) is str:
-        return __replaceStr(config)
-    else:
+    elif type(config) is int:
         return config
-
+    elif type(config) is float:
+        return config
+    else:
+        return __replaceStr(str(config))
 
 def __replaceDict(config):
     result = {}
