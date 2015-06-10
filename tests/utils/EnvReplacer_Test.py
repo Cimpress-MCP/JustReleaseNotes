@@ -70,10 +70,10 @@ class EnvParser_Test(unittest.TestCase):
         os.environ['ab_12'] = "xy99"
         os.environ['AbAb'] = "ZZZ"
         conf = {
-            unicode("a") : "ENV[abc]",
+            u"a" : "ENV[abc]",
             "c" : {
-                unicode("x") : "env[ab_12]",
-                unicode("d") : "Env[AbAb] x eNV[AbAb]"
+                u"x" : "env[ab_12]",
+                u"d" : "Env[AbAb] x eNV[AbAb]"
             }
         }
         expectedConf = {
