@@ -25,6 +25,21 @@ class factory_Test(unittest.TestCase):
              "Url" : "https://some.url",
             }))
 
+    def test_factorySupportsArrayOfIssuers(self):
+        self.assertIsInstance(JustReleaseNotes.issuers.factory.create(
+            [{
+             "Provider" : "JiraIssues",
+             "HtmlUrl" : "https://jiratrain101.vistaprint.net/jira/browse",
+             "Authorization" : "Basic dmNzbTpzdGFzaDN4dDNuZA==",
+             "Url" : "https://some.url"
+            },
+            {
+             "Provider" : "JiraIssues",
+             "HtmlUrl" : "https://jiratrain101.vistaprint.net/jira/browse",
+             "Authorization" : "Basic dmNzbTpzdGFzaDN4dDNuZA==",
+             "Url" : "https://some.url"
+            }]), JustReleaseNotes.issuers.AggregateIssuer.AggregateIssuer)
+
     def test_failsIfIssuerUnknown(self):
         with self.assertRaises(Exception):
             JustReleaseNotes.issuers.factory.create({ "Provider": "abrakadabra" })
