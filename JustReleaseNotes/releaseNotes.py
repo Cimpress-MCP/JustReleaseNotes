@@ -55,7 +55,6 @@ class ReleaseNotes:
         
         content = []
         for version in sortedVersions:
-        
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
                 print("Generating info for version " + version)
                 
