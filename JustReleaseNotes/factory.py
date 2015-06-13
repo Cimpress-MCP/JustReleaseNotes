@@ -7,8 +7,8 @@ def createWithConfig(module, name, conf):
         clazz = getattr(module, name)
         return clazz(conf)
     except:
-        e = sys.exc_info()[0]
-        raise Exception("Unable to create module provider {0} from module {1}".format(conf["Provider"], module))
+        e = sys.exc_info()[1]
+        raise Exception("Unable to create module provider {0} from module {1}: {2}".format(conf["Provider"], module, e))
 
 def createWithName(module, name):
    try:
@@ -16,5 +16,5 @@ def createWithName(module, name):
         clazz = getattr(module, name)
         return clazz()
    except:
-        e = sys.exc_info()[0]
-        raise Exception("Unable to create module provider {0} from module {1}".format(name, module))
+        e = sys.exc_info()[1]
+        raise Exception("Unable to create module provider {0} from module {1}: {2}".format(name, module, e))

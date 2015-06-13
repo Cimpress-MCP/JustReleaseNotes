@@ -83,6 +83,8 @@ where
 - JiraIssues
 - GitHubIssues
 
+It is also possible to specify an array of issue providers, then all of them will be used to retireve information about tickets.
+
 ``source provider`` is currently only:
 
 - GitRepo
