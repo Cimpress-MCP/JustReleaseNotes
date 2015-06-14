@@ -13,6 +13,3 @@ notifications:
   hipchat:
     rooms:
       secure: cAhDu6D70JbA1FKcow0P+f0Ph+ivHvX5fnJymnbQBhnyhhQglHl/cd+gJV4eAzaI0GZTarfP9QDouFQQ9DNdc5iW/3FouMcKWFahf4pulA79w3hXXVMH84J6hLrXi+r4vZ9+AQ7Ga6d7Tqw9N4/ceSIImGEoTfkTas8AlTAMnrg=
-env:
-  global:
-    secure: X0u8n5k5hdUKlEtJ2j4jqsEWGCASHnQlp7fFxOQDj/Yyz61IiQVGHY7KAlaIRjzHI+ebh9Ddj7xcfBU6ZamEQymaICTIhPC5aQOX3QP/tne+GSR8V1M7kOKjRYrMgVoxXmV89XAK4s9EAghTc9ng9ckRwwsgneOkNaAZ9XJm75M=
