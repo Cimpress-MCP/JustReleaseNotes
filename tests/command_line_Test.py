@@ -12,10 +12,6 @@ else:
 
 
 class ReleaseNote_Test(unittest.TestCase):
-    def open_side_effect(*args, **kwargs):
-        if args[1] == "config.json":
-            return
-        return None
 
     @patch("JustReleaseNotes.issuers.factory")
     @patch("JustReleaseNotes.sourcers.factory")
@@ -47,8 +43,8 @@ class ReleaseNote_Test(unittest.TestCase):
                           '   }'
                           ' } '
                           '}')
+
         with patch.object(builtins, 'open', mocked_open):
-            sys.argv = ['just_release', 'notes']
             JustReleaseNotes.command_line.main()
 
         mocked_open.assert_called_with(os.getcwd() + "/../JustReleaseNotes/index.ext", "wb")
