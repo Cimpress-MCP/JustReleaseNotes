@@ -45,7 +45,7 @@ class ReleaseNote_Test(unittest.TestCase):
                           '}')
 
         with patch.object(builtins, 'open', mocked_open):
-            JustReleaseNotes.command_line.main()
+            JustReleaseNotes.command_line.generate_release_notes("config.json")
 
         mocked_open.assert_called_with(os.getcwd() + "/../JustReleaseNotes/index.ext", "wb")
         mocked_open().write.assert_called_once_with(b'')
