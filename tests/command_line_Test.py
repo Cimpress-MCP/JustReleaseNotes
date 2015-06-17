@@ -48,7 +48,7 @@ class ReleaseNote_Test(unittest.TestCase):
                           ' } '
                           '}')
         with patch.object(builtins, 'open', mocked_open):
-            sys.argv = ['just_release', 'notes']
+            sys.argv = [str('just_release'), str('notes')]
             JustReleaseNotes.command_line.main()
 
         mocked_open.assert_called_with(os.getcwd() + "/../JustReleaseNotes/index.ext", "wb")
