@@ -3,6 +3,7 @@ from JustReleaseNotes.artifacters import Artifactory
 import requests
 import requests_mock
 import sys
+from mock import patch, MagicMock
 
 class Artifactory_Test(unittest.TestCase):
 
@@ -58,6 +59,34 @@ class Artifactory_Test(unittest.TestCase):
         m.get('http://artifactory/api/storage/libs-release-local/org/component', text=fileContents)
         with self.assertRaises(ValueError):
             artifacter.retrievePromotedVersions()
+
+  @patch("JustReleaseNotes.artifacters.versioners.factory.create")
+  def test_retrieveDependeciesVersions(self, mocked_versioner):
+    requests.packages.urllib3.disable_warnings()
+
+    config = { "Provider" : "Artifactory",
+               "Repository" : "libs-release-local",
+               "ArtifactUri" : "org/component",
+               "StorageUrl" : "http://artifactory/api/storage",
+               "DirectDependencies" : {
+                    "SomePackage" : {
+                        "type" : "dll",
+                        "name" : "some_package"
+                    }
+               }
+             }
+
+    versioner = MagicMock();
+    versioner.extractVersions.return_value = ['9.9']
+    mocked_versioner.return_value = versioner
+
+    artifacter = Artifactory.Artifactory(config);
+    with requests_mock.mock() as m:
+        m.get('http://artifactory/api/storage/libs-release-local/org/component/0.1.2/some_package', text='{ "downloadUri" : "http://some.url/9.9/file" }' )
+        m.get('http://some.url/9.9/file', text='ContentOfFileWithVersion9.9')
+        result = artifacter.retrieveDependeciesVersions("0.1.2")
+    self.assertEqual("9.9", result["SomePackage"]);
+
 
 if __name__ == '__main__':
     unittest.main()
