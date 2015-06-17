@@ -13,7 +13,7 @@ from JustReleaseNotes.issuers import factory
 from JustReleaseNotes.writers import factory
 from JustReleaseNotes.artifacters import factory
 from JustReleaseNotes.releaseNotes import *
-from utils import EnvReplacer
+from JustReleaseNotes.utils import EnvReplacer
 
 def main():
     parser = argparse.ArgumentParser(prog="just_release", description='Instruments release process.')
