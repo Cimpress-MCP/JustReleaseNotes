@@ -52,7 +52,6 @@ def main():
             generator = ReleaseNotes(conf, ticketProvider, writer, repo, promotedVersionsInfo)
             releaseNotes = generator.generateReleaseNotesByPromotedVersions()
 
-
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
