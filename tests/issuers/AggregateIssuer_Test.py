@@ -35,7 +35,7 @@ class GitHubIssues_Test(unittest.TestCase):
       self.assertIn("second-1", ret)
 
   @patch('JustReleaseNotes.issuers.factory.create')
-  def test_extractTicketsFromMessage_ReturnsTicketsExtractedByEachOfIssuers(self, mock_class):
+  def test_getTicketInfo_ReturnsTicketsExtractedByEachOfIssuers(self, mock_class):
       mock_class.side_effect = [DummyIssuer("first-1"), DummyIssuer("second-1")]
 
       config = [{ "Provider" : "first"},{ "Provider":"second"}]
@@ -45,7 +45,15 @@ class GitHubIssues_Test(unittest.TestCase):
       self.assertIn("Title of first-1", ret["title"])
       ret = issuer.getTicketInfo("second-1")
       self.assertIn("second-1", ret["ticket"])
-      self.assertIn("Title of second-1", ret["title"]   )
+      self.assertIn("Title of second-1", ret["title"])
+
+  @patch('JustReleaseNotes.issuers.factory.create')
+  def test_noIssuersReturnsNone(self, mock_class):
+      mock_class.side_effect = []
+      config = []
+      issuer = JustReleaseNotes.issuers.AggregateIssuer.AggregateIssuer(config)
+      ret = issuer.getTicketInfo("first-1")
+      self.assertEqual(None, ret)
 
 
 if __name__ == '__main__':
