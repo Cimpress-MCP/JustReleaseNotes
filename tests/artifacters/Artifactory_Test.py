@@ -61,10 +61,10 @@ class Artifactory_Test(unittest.TestCase):
             artifacter.retrievePromotedVersions()
 
   @patch("JustReleaseNotes.artifacters.versioners.factory.create")
-  def test_retrieveDependeciesVersions(self, mocked_versioner):
+  def test_retrieveDependeciesVersions_ExtractsVersion(self, mocked_versioner):
     requests.packages.urllib3.disable_warnings()
 
-    config = { "Provider" : "Artifactory",
+    configs = [{ "Provider" : "Artifactory",
                "Repository" : "libs-release-local",
                "ArtifactUri" : "org/component",
                "StorageUrl" : "http://artifactory/api/storage",
@@ -74,18 +74,33 @@ class Artifactory_Test(unittest.TestCase):
                         "name" : "some_package"
                     }
                }
-             }
+               },
+               { "Provider" : "Artifactory",
+               "Repository" : "libs-release-local",
+               "ArtifactUri" : "org/component",
+               "StorageUrl" : "http://artifactory/api/storage",
+               "DirectDependencies" : {
+                    "ANY" : {
+                        "type" : "ivy",
+                    }
+               }}]
 
-    versioner = MagicMock();
-    versioner.extractVersions.return_value = ['9.9']
-    mocked_versioner.return_value = versioner
+    for config in configs:
+        versioner = MagicMock();
+        versioner.extractVersions.return_value = ['9.9']
+        mocked_versioner.return_value = versioner
 
-    artifacter = Artifactory.Artifactory(config);
-    with requests_mock.mock() as m:
-        m.get('http://artifactory/api/storage/libs-release-local/org/component/0.1.2/some_package', text='{ "downloadUri" : "http://some.url/9.9/file" }' )
-        m.get('http://some.url/9.9/file', text='ContentOfFileWithVersion9.9')
-        result = artifacter.retrieveDependeciesVersions("0.1.2")
-    self.assertEqual("9.9", result["SomePackage"]);
+        artifacter = Artifactory.Artifactory(config);
+        with requests_mock.mock() as m:
+            m.get('http://artifactory/api/storage/libs-release-local/org/component/0.1.2/some_package', text='{ "downloadUri" : "http://some.url/9.9/file" }' )
+            m.get('http://artifactory/api/storage/libs-release-local/org/component/0.1.2/ivy-0.1.2.xml', text='{ "downloadUri" : "http://some.url/9.9/file" }' )
+            m.get('http://some.url/9.9/file', text='ContentOfFileWithVersion9.9')
+
+            result = artifacter.retrieveDependeciesVersions("0.1.2")
+
+        keys = config["DirectDependencies"].keys()
+        for key in keys:
+            self.assertEqual("9.9", result[key])
 
 
 if __name__ == '__main__':
