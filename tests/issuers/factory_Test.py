@@ -11,8 +11,8 @@ class factory_Test(unittest.TestCase):
             self.assertIsNotNone(JustReleaseNotes.issuers.factory.create(
                 {
                 "Provider" : "GitHubIssues",
-                "HtmlUrl" : "https://jiratrain101.vistaprint.net/jira/browse",
-                "Authorization" : "Basic dmNzbTpzdGFzaDN4dDNuZA==",
+                "HtmlUrl" : "https://jira.com/jira/browse",
+                "Authorization" : "Basic dXNlcjpwYXNz",
                 "Url" : "https://some.url"
                 }))
 
@@ -20,8 +20,8 @@ class factory_Test(unittest.TestCase):
         self.assertIsNotNone(JustReleaseNotes.issuers.factory.create(
             {
              "Provider" : "JiraIssues",
-             "HtmlUrl" : "https://jiratrain101.vistaprint.net/jira/browse",
-             "Authorization" : "Basic dmNzbTpzdGFzaDN4dDNuZA==",
+             "HtmlUrl" : "https://jira.com/jira/browse",
+             "Authorization" : "Basic dXNlcjpwYXNz",
              "Url" : "https://some.url",
             }))
 
@@ -29,14 +29,14 @@ class factory_Test(unittest.TestCase):
         self.assertIsInstance(JustReleaseNotes.issuers.factory.create(
             [{
              "Provider" : "JiraIssues",
-             "HtmlUrl" : "https://jiratrain101.vistaprint.net/jira/browse",
-             "Authorization" : "Basic dmNzbTpzdGFzaDN4dDNuZA==",
+             "HtmlUrl" : "https://jira.com/jira/browse",
+             "Authorization" : "Basic dXNlcjpwYXNz",
              "Url" : "https://some.url"
             },
             {
              "Provider" : "JiraIssues",
-             "HtmlUrl" : "https://jiratrain101.vistaprint.net/jira/browse",
-             "Authorization" : "Basic dmNzbTpzdGFzaDN4dDNuZA==",
+             "HtmlUrl" : "https://jira.com/jira/browse",
+             "Authorization" : "Basic dXNlcjpwYXNz",
              "Url" : "https://some.url"
             }]), JustReleaseNotes.issuers.AggregateIssuer.AggregateIssuer)
 
