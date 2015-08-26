@@ -17,7 +17,7 @@ from JustReleaseNotes.utils import EnvReplacer
 
 def main(argv):
     parser = argparse.ArgumentParser(prog="just_release", description='Instruments release process.')
-    parser.add_argument('command', metavar='cmd', nargs='?', action="store", choices=['notes'], default="notes")
+    parser.add_argument('command', metavar='cmd', action="store", choices=['notes'])
     parser.add_argument('--config', '-c', '--c', metavar='config.json', nargs='?', help='Specifies the configuration to use', default="config.json")
     args = parser.parse_args(argv)
 
