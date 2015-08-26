@@ -52,7 +52,7 @@ class ReleaseNote_Test(unittest.TestCase):
 
     @patch("sys.exit")
     def test_main_withDefaultConfig_NoData_DoesNotRaise_ProducesEmptyOutput(self, sysExit):
-        JustReleaseNotes.command_line.main([])
+        JustReleaseNotes.command_line.main()
         sysExit.assert_called_with(2)
 
 if __name__ == '__main__':
