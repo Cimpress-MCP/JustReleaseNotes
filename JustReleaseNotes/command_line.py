@@ -15,11 +15,11 @@ from JustReleaseNotes.artifacters import factory
 from JustReleaseNotes.releaseNotes import *
 from JustReleaseNotes.utils import EnvReplacer
 
-def main():
+def main(argv):
     parser = argparse.ArgumentParser(prog="just_release", description='Instruments release process.')
-    parser.add_argument('command', metavar='cmd', action="store", choices=['notes'], default="notes")
+    parser.add_argument('command', metavar='cmd', action="store", choices=['notes'], default="")
     parser.add_argument('--config', '-c', '--c', metavar='config.json', nargs='?', help='Specifies the configuration to use', default="config.json")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     if args.command == "notes":
         generate_release_notes(args.config)
