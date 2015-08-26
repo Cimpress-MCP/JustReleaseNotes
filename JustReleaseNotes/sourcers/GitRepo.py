@@ -50,7 +50,7 @@ class GitRepo:
             self.__repoX = Repo.clone_from(self.__repo, path)
         except:
             self.__repoX = Repo(path)
-        o = self.__repoX.remotes[self.__remote];
+        o = self.__repoX.remotes[self.__remote]
         o.pull()
 
     def setParents(self, commit):
