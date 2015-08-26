@@ -23,8 +23,8 @@ class ReleaseNote_Test(unittest.TestCase):
         repo.gitCommitMessagesByHash = { "ef334212ab2323a32323" : "Something about TCKT-1"}
 
 
-        releaseNotes = JustReleaseNotes.releaseNotes.ReleaseNotes(conf, ticketProvider, writer, repo, promotedVersions)
-        releaseNotes.generateReleaseNotesByPromotedVersions()
+        releaseNotes = JustReleaseNotes.releaseNotes.ReleaseNotes(conf, ticketProvider, repo, promotedVersions)
+        releaseNotes.generateReleaseNotesByPromotedVersions(writer)
         writer.printVersionBlock.assert_called_once_with({}, "1.0.1.2", "N/A", ["TCKT-1"])
 
 if __name__ == '__main__':

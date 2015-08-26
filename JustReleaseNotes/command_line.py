@@ -15,14 +15,25 @@ from JustReleaseNotes.artifacters import factory
 from JustReleaseNotes.releaseNotes import *
 from JustReleaseNotes.utils import EnvReplacer
 
-def main():
+def main(argv):
     parser = argparse.ArgumentParser(prog="just_release", description='Instruments release process.')
-    parser.add_argument('command', metavar='cmd', action="store", choices=['notes'], default="notes")
+    parser.add_argument('command', metavar='cmd', action="store", choices=['notes'])
     parser.add_argument('--config', '-c', '--c', metavar='config.json', nargs='?', help='Specifies the configuration to use', default="config.json")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     if args.command == "notes":
         generate_release_notes(args.config)
+
+def generateForOneWriter(generator, ticketProvider, writerType, directory, fileName):
+    print("\nGenerating using {0}".format(writerType))
+    writer = JustReleaseNotes.writers.factory.create(writerType, ticketProvider)
+    releaseNotes = generator.generateReleaseNotesByPromotedVersions(writer)
+    if fileName is None:
+        fileName = "index{0}".format(writer.getExtension())
+    print("\nStoring release notes at {0}".format(os.path.join(directory, fileName)))
+    f = open(os.path.join(directory, fileName), "wb")
+    f.write(releaseNotes.encode('utf-8'))
+    f.close()
 
 def generate_release_notes(configFile):
         requests.packages.urllib3.disable_warnings()
@@ -47,19 +58,18 @@ def generate_release_notes(configFile):
             directory = os.path.join(releaseNotesConfig["pathToSave"],packageName)
             conf["Source"]["Directory"] = directory
             repo = JustReleaseNotes.sourcers.factory.create(conf["Source"])
-            writer = JustReleaseNotes.writers.factory.create(conf["ReleaseNotesWriter"], ticketProvider)
-
-            generator = ReleaseNotes(conf, ticketProvider, writer, repo, promotedVersionsInfo)
-            releaseNotes = generator.generateReleaseNotesByPromotedVersions()
 
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
-            fileName = "index{0}".format(writer.getExtension())
-            print ("\nStoring {0} release notes at {1}".format(packageName, os.path.join(directory,fileName)))
-            f = open(os.path.join(directory,fileName), "wb")
-            f.write(releaseNotes.encode('utf-8'))
-            f.close()
+            generator = ReleaseNotes(conf, ticketProvider, repo, promotedVersionsInfo)
+            writerConfigs = conf["ReleaseNotesWriter"]
+            if isinstance(writerConfigs, str):
+                generateForOneWriter(generator, ticketProvider, writerConfigs, directory, None)
+            elif hasattr(writerConfigs, '__iter__'):
+                for writerConf in writerConfigs:
+                    path = writerConf["PathToSave"]
+                    generateForOneWriter(generator, ticketProvider, writerConf["Provider"], os.path.dirname(path), os.path.basename(path))
 
 if __name__ == '__main__':
     main()

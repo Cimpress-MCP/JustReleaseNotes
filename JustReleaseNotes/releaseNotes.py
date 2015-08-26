@@ -1,20 +1,23 @@
 class ReleaseNotes:
 
     __PendingPromotionCaption = "Pending promotion"
-    __Writer = "MarkdownWriter"
     __conf = {}
     __ticketsByVersion = {}
     __promotedVersionsInfo = {}
     __ticketReplacements = {}
     __ticketProvider = {}
 
-    def __init__(self, conf, ticketProvider, releaseNotesWriter, repo, promotedVersionsInfo):
+    def __init__(self, conf, ticketProvider, repo, promotedVersionsInfo):
         self.__ticketsByVersion = {}
         self.__conf = conf
-        self.__Writer = releaseNotesWriter
         self.__repo = repo
         self.__promotedVersionsInfo = promotedVersionsInfo
         self.__ticketProvider = ticketProvider;
+
+        self.__repo.checkout()
+        self.__repo.retrieveHistory()
+        self.__repo.retrieveVersionsByGitHash( list(self.__promotedVersionsInfo.keys()) )
+        self.__computeTicketsByVersion()
         
     def __computeTicketsByVersion(self):
         currentVersion = "latest"        
@@ -26,7 +29,7 @@ class ReleaseNotes:
             tickets = self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
             self.__ticketsByVersion[currentVersion] = self.__ticketsByVersion[currentVersion] + tickets
      
-    def __printVersionBlock(self, version, tickets):        
+    def __printVersionBlock(self, version, tickets, writer):
         date = "N/A"
         deps = {}
         if version != self.__PendingPromotionCaption:
@@ -37,15 +40,11 @@ class ReleaseNotes:
 
         if len(tickets) == 0:
             return ""
-        return self.__Writer.printVersionBlock(deps, version, date, tickets)
 
-    def generateReleaseNotesByPromotedVersions(self):
+        return writer.printVersionBlock(deps, version, date, tickets)
+
+    def generateReleaseNotesByPromotedVersions(self, writer):
         
-        self.__repo.checkout()
-        self.__repo.retrieveHistory()
-        self.__repo.retrieveVersionsByGitHash( list(self.__promotedVersionsInfo.keys()) )
-        self.__computeTicketsByVersion()
-
         ticketsSoFar = []
         hashesInVersion = self.__repo.gitHistoryByVersion
 
@@ -67,11 +66,11 @@ class ReleaseNotes:
                 ticketsSoFar += self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
 
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
-                content = content + [self.__printVersionBlock(version, ticketsSoFar)]
+                content = content + [self.__printVersionBlock(version, ticketsSoFar, writer)]
                 ticketsSoFar = []                
 
         if len(ticketsSoFar) > 0:
-            content = content + [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar)]           
+            content = content + [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar, writer)]
         
         content.sort(reverse=True)        
         return "\n".join(content)
