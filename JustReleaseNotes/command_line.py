@@ -63,12 +63,13 @@ def generate_release_notes(configFile):
                 os.makedirs(directory)
 
             generator = ReleaseNotes(conf, ticketProvider, repo, promotedVersionsInfo)
-            if hasattr(conf["ReleaseNotesWriter"], '__iter__'):
-                for writerConf in conf["ReleaseNotesWriter"]:
+            writerConfigs = conf["ReleaseNotesWriter"]
+            if isinstance(writerConfigs, str):
+                generateForOneWriter(generator, ticketProvider, writerConfigs, directory, None)
+            elif hasattr(writerConfigs, '__iter__'):
+                for writerConf in writerConfigs:
                     path = writerConf["PathToSave"]
                     generateForOneWriter(generator, ticketProvider, writerConf["Provider"], os.path.dirname(path), os.path.basename(path))
-            else:
-                generateForOneWriter(generator, ticketProvider, conf["ReleaseNotesWriter"], directory, None)
 
 if __name__ == '__main__':
     main()
