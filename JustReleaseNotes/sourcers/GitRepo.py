@@ -146,5 +146,13 @@ class GitRepo:
                 self.versionsByGitHash[hexsha] = version     
 
             self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha,version, [])
-            
+
+        self.__addHeadIfNotPresent()
         self.__optimizeHistoryByVersion()
+
+    def __addHeadIfNotPresent(self):
+        hexsha = str(self.__repoX.heads[self.__branch].commit)
+        if hexsha not in self.versionsByGitHash:
+            version = str(sys.maxsize)
+            self.versionsByGitHash[hexsha] = version
+            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha, version, [])

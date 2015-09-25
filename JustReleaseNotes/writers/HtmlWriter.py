@@ -1,6 +1,7 @@
 import re
+from JustReleaseNotes.writers import BaseWriter
 
-class HtmlWriter:
+class HtmlWriter(BaseWriter.BaseWriter):
 
     def __init__(self, ticketProvider):
         self.__ticketProvider = ticketProvider
@@ -9,6 +10,8 @@ class HtmlWriter:
         return ".html"
 
     def printVersionBlock(self, deps, version, date, tickets):
+        version = self.convertVersion(version)
+
         data = [
             "<div style=\"width:100%; border: 0px\">",
             "<a name=\"" + version + "\"></a>"]

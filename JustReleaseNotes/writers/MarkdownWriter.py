@@ -1,6 +1,7 @@
 import re
+from JustReleaseNotes.writers import BaseWriter
 
-class MarkdownWriter:
+class MarkdownWriter(BaseWriter.BaseWriter):
 
     def __init__(self, ticketProvider):
         self.__ticketProvider = ticketProvider
@@ -9,6 +10,8 @@ class MarkdownWriter:
         return ".md"
 
     def printVersionBlock(self, deps, version, date, tickets):
+        version = self.convertVersion(version)
+
         data = ["## {0} ##".format(version)]
         if date != 'N/A':
             data.append(date)
