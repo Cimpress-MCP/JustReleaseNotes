@@ -41,14 +41,14 @@ Configuration file is in flux. For now it is a json looking something like this:
 
         "packages" : {
             <package name> : {
-                "Issues" : {
+                "Issues" : [{
                     "Provider" : <issues provider>,
                     "HtmlUrl" : ...,
                     "Authorization" : ...,
                     "Url" : ...,
                     "WebImagesPath" : ...
                     "TicketRegex" : ...
-                },
+                }],
                 "Releases" : {
                     "Provider" : <releases provider>,
                     "Repository" : ...,
@@ -60,8 +60,17 @@ Configuration file is in flux. For now it is a json looking something like this:
                     "RepositoryUrl" : ...
                     "Remote" : ...
                     "Branch" : ...
+                    "VersionTagRegex" : "^([0-9]+\\.[0-9]+\\.[0-9]+)$"
                 },
-                "ReleaseNotesWriter" : <notes writer>
+                "ReleaseNotesWriter" : [
+                    {
+                        "Provider" : "MarkdownWriter",
+                        "PathToSave" : "index.md"
+                    },
+                    {
+                        "Provider" : "HtmlWriter",
+                        "PathToSave" : "wwwroot/release_notes.html"
+                    }]
             }
         }
     }
