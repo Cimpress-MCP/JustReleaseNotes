@@ -9,6 +9,9 @@ class MarkdownWriter(BaseWriter.BaseWriter):
     def getExtension(self):
         return ".md"
 
+    def getImageBlock(self, icon):
+        return "![Icon]({0})".format(icon)
+
     def printVersionBlock(self, deps, version, date, tickets):
         version = self.convertVersion(version)
 
@@ -30,10 +33,9 @@ class MarkdownWriter(BaseWriter.BaseWriter):
                     if "embedded_link" in ticketInfo:
                         for ticket, link in list(ticketInfo["embedded_link"].items()):
                             title = re.sub(ticket, "[{1}]({0})".format(link, ticket), title)
-
                     iconPart = ""
                     if "issue_type_icon" in ticketInfo:
-                        iconPart = "<img src=\"{0}\" width=16 height=16></img>".format(ticketInfo["issue_type_icon"])
+                        iconPart = self.getImageBlock(ticketInfo["issue_type_icon"])
                     data.append("* {0} [{1}]({3}) {2}".format(iconPart, ticketInfo["ticket"], title.encode('ascii','ignore').decode("ascii") , ticketInfo["html_url"]) )
 
         if appendStabilityImprovements:

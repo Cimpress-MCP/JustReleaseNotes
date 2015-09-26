@@ -56,6 +56,12 @@ class MarkdownWriter_Test(unittest.TestCase):
             '[DBA-1](http://some.url) DBA1 ticket that references [#DBA-2](http://some.url/DBA-2)\n',
             output)
 
+    def test_givenFairlyCompleteTicketMarkdownBlockIsGenerated(self):
+        mockedTicketProvider = Mock()
+        writer = MarkdownWriter.MarkdownWriter(mockedTicketProvider)
+        self.assertEqual("![Icon](http://icon.url/image.png)",
+                         writer.getImageBlock("http://icon.url/image.png"));
+
 
 if __name__ == '__main__':
     unittest.main()
