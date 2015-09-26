@@ -54,6 +54,7 @@ class JiraIssues(BaseIssues.BaseIssues):
             ret["issue_type_icon"] = self.__fieldIcon(data["fields"]["issuetype"])
             ret["priority_icon"] = self.__fieldIcon(data["fields"]["priority"])
             ret["embedded_link"] = embedded_links
+            ret["reporter"] = data["fields"]["reporter"]["displayName"]
         else:
             return None
 

@@ -66,5 +66,6 @@ class GitHubIssues(BaseIssues.BaseIssues):
             "html_url" : data["html_url"],
             "ticket" : "#{0}".format(ticket),
             "title" : title,
-            "embedded_link" : embedded_links }
+            "embedded_link" : embedded_links,
+            "reporter": data["user"]["login"]}
 

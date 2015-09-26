@@ -12,11 +12,8 @@ class HtmlWriter(BaseWriter.BaseWriter):
     def printVersionBlock(self, deps, version, date, tickets):
         version = self.convertVersion(version)
 
-        data = [
-            "<div style=\"width:100%; border: 0px\">",
-            "<a name=\"" + version + "\"></a>"]
+        data = ["<div style=\"width:100%; border: 0px\">", "<a name=\"" + version + "\"></a>", "<h2>" + version]
 
-        data.append("<h2>" + version)
         if date != 'N/A':
             data.append("<sup><small style=\"font-size:10px\"><i> " + date + "</i></small></sup>")
         data.append("</h2>")
@@ -49,7 +46,8 @@ class HtmlWriter(BaseWriter.BaseWriter):
                         imgHtml += imgFormat.format("Issue Type", ticketInfo["issue_type_icon"])
                     if "priority_icon" in ticketInfo:
                         imgHtml += imgFormat.format("Priority", ticketInfo["priority_icon"])
-                    data.append('<li style="font-size:14px">{0}<a href="{3}">{1}</a> {2}</li>'.format(imgHtml, ticketInfo["ticket"], title , ticketInfo["html_url"]))
+                    data.append('<li style="font-size:14px">{0}<a href="{3}">{1}</a> {2}, reported by {4}</li>'.format(
+                        imgHtml, ticketInfo["ticket"], title , ticketInfo["html_url"], ticketInfo["reporter"]))
 
         if appendStabilityImprovements:
             data.append("<li style=\"font-size:14px\">Stability improvements</li>")

@@ -3,7 +3,7 @@ from JustReleaseNotes.issuers import JiraIssues
 import requests
 import requests_mock
 
-class GitHubIssues_Test(unittest.TestCase):
+class JiraIssues_Test(unittest.TestCase):
 
   def test_retrieveIssueInfoWhenNoCachedData_ConnectsToTheSource(self):
     requests.packages.urllib3.disable_warnings()
@@ -13,7 +13,8 @@ class GitHubIssues_Test(unittest.TestCase):
                      '"summary" : "Title of TCKT-23",' \
                      '"status" : { "name" : "New", "iconUrl" : "http://site.com/imageUrl.png" },' \
                      '"issuetype" : { "name" : "Task", "iconUrl" : "http://site.com/imageUrl.png" },'\
-                     '"priority" : { "name" : "Critical", "iconUrl" : "http://site.com/imageUrl.png" }'\
+                     '"priority" : { "name" : "Critical", "iconUrl" : "http://site.com/imageUrl.png" },'\
+                     '"reporter" : { "displayName" : "Test User" }'\
                      ' }' \
                      ' }'
 
