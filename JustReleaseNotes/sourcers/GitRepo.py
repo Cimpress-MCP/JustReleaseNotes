@@ -33,7 +33,15 @@ class GitRepo:
             self.__remote = conf["Remote"]
 
         if "Branch" in conf:
-            self.__branch = conf["Branch"]
+            b = conf["Branch"]
+            pos = b.find("/")
+            if (pos >= 0):
+                self.__remote = b[:pos]
+                self.__branch = b[pos+1:]
+            else:
+                self.__branch = b
+
+
         
     def __log(self, message):
         print ("Git: " + message)
@@ -50,6 +58,10 @@ class GitRepo:
             self.__repoX = Repo.clone_from(self.__repo, path)
         except:
             self.__repoX = Repo(path)
+
+        release_notes_head = self.__repoX.create_head(self.__branch, self.__remote + "/" + self.__branch)
+        self.__repoX.head.reference = release_notes_head
+        self.__repoX.head.reset(index=True, working_tree=True)
         o = self.__repoX.remotes[self.__remote]
         o.pull()
 
