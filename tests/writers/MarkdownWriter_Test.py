@@ -59,8 +59,8 @@ class MarkdownWriter_Test(unittest.TestCase):
         output = writer.printVersionBlock(deps, version, date, tickets)
         self.assertEqual(
             '## 1.0.2.0 ##\n01-02-2015\n\n*  [DBA-2](http://some.url) DBA2 ticket that references'
-            ' [#DBA-1](http://some.url/DBA-1), reported by test user\n*  [DBA-1](http://some.url) DBA1 ticket that references '
-            '[#DBA-2](http://some.url/DBA-2), reported by test user\n',
+            ' [#DBA-1](http://some.url/DBA-1), *reported by* **test user**\n*  [DBA-1](http://some.url) DBA1 ticket that references '
+            '[#DBA-2](http://some.url/DBA-2), *reported by* **test user**\n',
             output)
 
     def test_versionHeaderParsingAndGenerationAreCompatible(self):
