@@ -37,7 +37,7 @@ class HtmlWriter_Test(unittest.TestCase):
         tickets = ["ABCD-1", "ABCD-2"]
         output = writer.printVersionBlock(deps, version, date, tickets)
         self.assertEqual('<div style="width:100%; border: 0px">\n'
-                         '<a name="1.0.2.0"></a>\n'
+                         '<a name="1.0.2.0" class="version"></a>\n'
                          '<h2>1.0.2.0\n<sup><small style="font-size:10px"><i> 01-02-2015</i></small></sup>\n'
                          '</h2>\n'
                          '<div style="background: #eee; "><i>Components: \n'
@@ -59,7 +59,7 @@ class HtmlWriter_Test(unittest.TestCase):
         tickets = ["ABCD-1", "ABCD-2"]
         output = writer.printVersionBlock(deps, version, date, tickets)
         self.assertEqual('<div style="width:100%; border: 0px">\n'
-                         '<a name="1.0.2.0"></a>\n'
+                         '<a name="1.0.2.0" class="version"></a>\n'
                          '<h2>1.0.2.0\n<sup><small style="font-size:10px"><i> 01-02-2015</i></small></sup>\n'
                          '</h2>\n'
                          '<div style="background: #eee; "><i>Components: \n'
@@ -69,6 +69,51 @@ class HtmlWriter_Test(unittest.TestCase):
                          '<li style="font-size:14px"><a href="http://some.url">ABCD-2</a> ABCD2 ticket that references <a href="http://some.url/ABCD-1">ABCD-1</a>, reported by test user</li>\n'
                          '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket that references <a href="http://some.url/ABCD-2">ABCD-2</a>, reported by test user</li>\n</ul>\n</div>\n',
                          output)
+
+    def test_setInitialContentParsesHtml(self):
+        mockedTicketProvider = Mock()
+        mockedData= '<div style="width:100%; border: 0px">\n' \
+                    '<a name="1.0.2.0" class="version"></a>\n' \
+                    '<h2>1.0.2.0\n<sup><small style="font-size:10px"><i> 01-02-2015</i></small></sup>\n' \
+                    '</h2>\n' \
+                    '<div style="background: #eee; "><i>Components: \n' \
+                    'SomeComponent1: 2.3.*; SomeComponent2: 1.0.0\n' \
+                    '</i></div>\n' \
+                    '<ul>\n' \
+                    '<li style="font-size:14px"><a href="http://some.url">ABCD-2</a> ABCD2 ticket that references <a href="http://some.url/ABCD-1">ABCD-1</a>, reported by test user</li>\n' \
+                    '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket that references <a href="http://some.url/ABCD-2">ABCD-2</a>, reported by test user</li>\n</ul>\n</div>\n'
+        writer = HtmlWriter.HtmlWriter(mockedTicketProvider)
+        output = writer.setInitialContent(mockedData)
+        self.assertEqual(1, len(output))
+        self.assertEqual(['<a name="1.0.2.0" class="version"></a>',
+                         '<h2>1.0.2.0',
+                         '<sup><small style="font-size:10px"><i> 01-02-2015</i></small></sup>',
+                         '</h2>',
+                         '<div style="background: #eee; "><i>Components: ',
+                         'SomeComponent1: 2.3.*; SomeComponent2: 1.0.0',
+                         '</i></div>',
+                         '<ul>',
+                         '<li style="font-size:14px"><a href="http://some.url">ABCD-2</a> ABCD2 ticket that references <a href="http://some.url/ABCD-1">ABCD-1</a>, reported by test user</li>',
+                         '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket that references <a href="http://some.url/ABCD-2">ABCD-2</a>, reported by test user</li>',
+                         '</ul>',
+                         '</div>',
+                         ''
+                         ], output["1.0.2.0"])
+
+    def test_printVersionBlockReturnsWhateverIsPresentInitially(self):
+        mockedTicketProvider = Mock()
+        mockedData='<a name="1.0.0.1" class="version"></a>\n' \
+                   'SomeCustomStuff' \
+                   'possibly even unstructured\n some comments etc'
+        writer = HtmlWriter.HtmlWriter(mockedTicketProvider)
+        output = writer.setInitialContent(mockedData)
+        self.assertEqual(1, len(output))
+        self.assertEqual(mockedData, writer.printVersionBlock(None, "1.0.0.1", None, None))
+
+    def test_versionHeaderParsingAndGenerationAreCompatible(self):
+        mockedTicketProvider = Mock()
+        writer = HtmlWriter.HtmlWriter(mockedTicketProvider)
+        self.assertEqual("1.2.3", writer.parseVersionHeader(writer.getVersionHeader("1.2.3")))
 
 
 if __name__ == '__main__':

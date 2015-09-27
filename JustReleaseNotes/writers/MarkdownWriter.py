@@ -1,10 +1,11 @@
 import re
+import sys
 from JustReleaseNotes.writers import BaseWriter
 
 class MarkdownWriter(BaseWriter.BaseWriter):
 
     def __init__(self, ticketProvider):
-        self.__ticketProvider = ticketProvider
+        BaseWriter.BaseWriter.__init__(self, ticketProvider)
 
     def getExtension(self):
         return ".md"
@@ -12,10 +13,22 @@ class MarkdownWriter(BaseWriter.BaseWriter):
     def getImageBlock(self, icon):
         return "![Icon]({0})".format(icon)
 
-    def printVersionBlock(self, deps, version, date, tickets):
-        version = self.convertVersion(version)
+    def getVersionHeader(self, version):
+        return "## {0} ##".format(version)
 
-        data = ["## {0} ##".format(version)]
+    def parseVersionHeader(self, line):
+        if (line.startswith("## ") and line.endswith(" ##")):
+            return line[3:len(line)-3]
+        else:
+            return False
+
+    def printVersionBlock(self, deps, version, date, tickets):
+        baseoutput = BaseWriter.BaseWriter.printVersionBlock(self, deps, version, date, tickets)
+        if baseoutput is not None:
+            return baseoutput
+
+        version = self.convertVersion(version)
+        data = [self.getVersionHeader(version)]
         if date != 'N/A':
             data.append(date)
 
@@ -27,7 +40,7 @@ class MarkdownWriter(BaseWriter.BaseWriter):
             if ticket == "NULL":
                 appendStabilityImprovements = True
             else:
-                ticketInfo = self.__ticketProvider.getTicketInfo(ticket)
+                ticketInfo = self.ticketProvider.getTicketInfo(ticket)
                 if ticketInfo != None:
                     title = ticketInfo["title"]
                     if "embedded_link" in ticketInfo:

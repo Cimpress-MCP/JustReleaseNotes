@@ -1,8 +1,13 @@
 import unittest
 from JustReleaseNotes.writers import MarkdownWriter
-from mock import MagicMock
+from mock import Mock, MagicMock, mock_open, patch
 from mock import Mock
+from sys import version_info
 
+if version_info.major == 2:
+    import __builtin__ as builtins
+else:
+    import builtins
 
 class MarkdownWriter_Test(unittest.TestCase):
     def test_returnsMdExtension(self):
@@ -58,12 +63,54 @@ class MarkdownWriter_Test(unittest.TestCase):
             '[#DBA-2](http://some.url/DBA-2), reported by test user\n',
             output)
 
+    def test_versionHeaderParsingAndGenerationAreCompatible(self):
+        mockedTicketProvider = Mock()
+        writer = MarkdownWriter.MarkdownWriter(mockedTicketProvider)
+        self.assertEqual("1.2.3", writer.parseVersionHeader(writer.getVersionHeader("1.2.3")))
+
     def test_givenFairlyCompleteTicketMarkdownBlockIsGenerated(self):
         mockedTicketProvider = Mock()
         writer = MarkdownWriter.MarkdownWriter(mockedTicketProvider)
         self.assertEqual("![Icon](http://icon.url/image.png)",
                          writer.getImageBlock("http://icon.url/image.png"));
 
+    def test_setInitialContentParsesMarkdown(self):
+        mockedTicketProvider = Mock()
+        mockedData='## Upcoming developments ##\n03-02-2015\n\n' \
+                   '*  [DBA-3](http://some.url) DBA2 ticket that references \n' \
+                   '*  [DBA-4](http://some.url) DBA1 ticket that references \n' \
+                   '## 1.0.2.0 ##\n02-02-2015\n\n' \
+                   '*  [DBA-2](http://some.url) DBA2 ticket that references [#DBA-1](http://some.url/DBA-1), reported by test user\n' \
+                   '*  [DBA-1](http://some.url) DBA1 ticket that references [#DBA-2](http://some.url/DBA-2), reported by test user\n' \
+                   '## 1.0.0.1 ##\n01-02-2015\n\n' \
+                   '*  [DBA-3](http://some.url) DBA2 ticket that references \n' \
+                   '*  [DBA-4](http://some.url) DBA1 ticket that references \n'
+        writer = MarkdownWriter.MarkdownWriter(mockedTicketProvider)
+        output = writer.setInitialContent(mockedData)
+        self.assertEqual(2, len(output))
+        self.assertEqual(["## 1.0.2.0 ##",
+                           "02-02-2015",
+                           '',
+                           "*  [DBA-2](http://some.url) DBA2 ticket that references [#DBA-1](http://some.url/DBA-1), reported by test user",
+                           "*  [DBA-1](http://some.url) DBA1 ticket that references [#DBA-2](http://some.url/DBA-2), reported by test user"
+                           ], output["1.0.2.0"])
+        self.assertEqual(['## 1.0.0.1 ##',
+                           '01-02-2015',
+                           '',
+                           '*  [DBA-3](http://some.url) DBA2 ticket that references ',
+                           '*  [DBA-4](http://some.url) DBA1 ticket that references ',
+                           ''
+                           ], output["1.0.0.1"])
+
+    def test_printVersionBlockReturnsWhateverIsPresentInitially(self):
+        mockedTicketProvider = Mock()
+        mockedData='## 1.0.0.1 ##\n' \
+                   'SomeCustomStuff' \
+                   'possibly even unstructured\n some comments etc'
+        writer = MarkdownWriter.MarkdownWriter(mockedTicketProvider)
+        output = writer.setInitialContent(mockedData)
+        self.assertEqual(1, len(output))
+        self.assertEqual(mockedData, writer.printVersionBlock(None, "1.0.0.1", None, None))
 
 if __name__ == '__main__':
     unittest.main()

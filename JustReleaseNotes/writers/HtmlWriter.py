@@ -4,15 +4,29 @@ from JustReleaseNotes.writers import BaseWriter
 class HtmlWriter(BaseWriter.BaseWriter):
 
     def __init__(self, ticketProvider):
-        self.__ticketProvider = ticketProvider
+        BaseWriter.BaseWriter.__init__(self, ticketProvider)
 
     def getExtension(self):
         return ".html"
 
+    def getVersionHeader(self, version):
+        return "<a name=\"{0}\" class=\"version\"></a>".format(version)
+
+    def parseVersionHeader(self, line):
+        if (line.startswith("<a name=\"") and line.endswith("\" class=\"version\"></a>")):
+            return line[9:len(line)-22]
+        else:
+            return False
+
+
     def printVersionBlock(self, deps, version, date, tickets):
+        baseoutput = BaseWriter.BaseWriter.printVersionBlock(self, deps, version, date, tickets)
+        if baseoutput is not None:
+            return baseoutput
+
         version = self.convertVersion(version)
 
-        data = ["<div style=\"width:100%; border: 0px\">", "<a name=\"" + version + "\"></a>", "<h2>" + version]
+        data = ["<div style=\"width:100%; border: 0px\">", self.getVersionHeader(version), "<h2>" + version]
 
         if date != 'N/A':
             data.append("<sup><small style=\"font-size:10px\"><i> " + date + "</i></small></sup>")
@@ -32,7 +46,7 @@ class HtmlWriter(BaseWriter.BaseWriter):
             if ticket == "NULL":
                 appendStabilityImprovements = True
             else:
-                ticketInfo = self.__ticketProvider.getTicketInfo(ticket)
+                ticketInfo = self.ticketProvider.getTicketInfo(ticket)
                 if ticketInfo != None:
                     title = ticketInfo["title"]
                     if "embedded_link" in ticketInfo:
