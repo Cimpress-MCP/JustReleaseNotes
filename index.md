@@ -1,4 +1,4 @@
-## Upcoming developments ##
+## 0.1.5 ##
 
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#9](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/9) Enable incremental generation, *reported by* **rnowosielski**
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#5](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/5) Change the way the code in invoked so that multiple formats can be generated simultaneously, *reported by* **rnowosielski**
