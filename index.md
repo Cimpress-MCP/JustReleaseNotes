@@ -1,3 +1,20 @@
+## Upcoming developments ##
+
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#9](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/9) Enable incremental generation, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#5](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/5) Change the way the code in invoked so that multiple formats can be generated simultaneously, *reported by* **rnowosielski**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#41](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/41) Fix for checkout, *reported by* **rnowosielski**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#39](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/39) Add ability to show tickets that are completed but not part of any version, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#38](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/38) Expose the reporter in the release notes, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#36](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/36) There is no way to represent tickets that were committed after any label, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#35](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/35) Solve the stash markdown compatibility issue, *reported by* **rnowosielski**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#34](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/34) Adding option for multiple writers, *reported by* **rnowosielski**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#30](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/30) fixed import statement, *reported by* **mkovacioglu**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#29](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/29) Enable multiple ticket sources, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#28](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/28) Allow multiple issue sources to be used simultaneously, *reported by* **rnowosielski**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#27](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/27) Fixes that resulted from first usage of version 0.1.2 with ivbcore, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#25](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/25) Provide more configurability around git checkout, *reported by* **rnowosielski**
+* Stability improvements
+
 ## 0.1.2 ##
 
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#8](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/8) Make the regular expression in extractTicketsFromMessage configurable.

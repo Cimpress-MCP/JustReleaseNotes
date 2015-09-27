@@ -56,11 +56,13 @@ class GitRepo:
         self.__log("Cloning " + self.__repo + " at " + path)
         try:
             self.__repoX = Repo.clone_from(self.__repo, path)
+            release_notes_head = self.__repoX.create_head(self.__branch, self.__remote + "/" + self.__branch)
+            self.__repoX.head.reference = release_notes_head
         except:
             self.__repoX = Repo(path)
+            self.__repoX.head.reference = self.__repoX.heads[self.__branch]
 
-        release_notes_head = self.__repoX.create_head(self.__branch, self.__remote + "/" + self.__branch)
-        self.__repoX.head.reference = release_notes_head
+
         self.__repoX.head.reset(index=True, working_tree=True)
         o = self.__repoX.remotes[self.__remote]
         o.pull()

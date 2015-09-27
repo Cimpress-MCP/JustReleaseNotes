@@ -26,10 +26,19 @@ def main():
 
 def generateForOneWriter(generator, ticketProvider, writerType, directory, fileName):
     print("\nGenerating using {0}".format(writerType))
+
     writer = JustReleaseNotes.writers.factory.create(writerType, ticketProvider)
-    releaseNotes = generator.generateReleaseNotesByPromotedVersions(writer)
+
     if fileName is None:
         fileName = "index{0}".format(writer.getExtension())
+
+    f = open(os.path.join(directory, fileName), "r")
+    content = f.read()
+    f.close()
+
+    writer.setInitialContent(content)
+    releaseNotes = generator.generateReleaseNotesByPromotedVersions(writer)
+
     print("\nStoring release notes at {0}".format(os.path.join(directory, fileName)))
     f = open(os.path.join(directory, fileName), "wb")
     f.write(releaseNotes.encode('utf-8'))

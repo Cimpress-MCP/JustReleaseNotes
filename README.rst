@@ -7,7 +7,16 @@
    :target: https://travis-ci.org/Cimpress-MCP/JustReleaseNotes
 
 .. image:: https://coveralls.io/repos/Cimpress-MCP/JustReleaseNotes/badge.svg?branch=master
-  :target: https://coveralls.io/r/Cimpress-MCP/JustReleaseNotes?branch=master
+   :alt: Coveralls
+   :target: https://coveralls.io/r/Cimpress-MCP/JustReleaseNotes?branch=master
+
+.. image:: https://img.shields.io/pypi/v/JustReleaseNotes.svg
+   :alt: PyPI
+   :target: https://pypi.python.org/pypi/JustReleaseNotes/
+
+.. image:: https://img.shields.io/pypi/dm/JustReleaseNotes.svg
+   :alt: PyPI
+   :target: https://pypi.python.org/pypi/JustReleaseNotes/
 
 
 ==================
@@ -29,7 +38,7 @@ Usage
 
 To run the tool, call::
    
-  & just_release notes -c <config.json>
+  & just_release --config <config.json> notes
 
 Configuration
 -------------
@@ -62,15 +71,10 @@ Configuration file is in flux. For now it is a json looking something like this:
                     "Branch" : ...
                     "VersionTagRegex" : "^([0-9]+\\.[0-9]+\\.[0-9]+)$"
                 },
-                "ReleaseNotesWriter" : [
-                    {
-                        "Provider" : "MarkdownWriter",
-                        "PathToSave" : "index.md"
-                    },
-                    {
-                        "Provider" : "HtmlWriter",
-                        "PathToSave" : "wwwroot/release_notes.html"
-                    }]
+                "ReleaseNotesWriter" : [{
+                    "Provider" : ...,
+                    "PathToSave" : ...
+                }]
             }
         }
     }
