@@ -38,7 +38,7 @@ Usage
 
 To run the tool, call::
    
-  & just_release -config <config.json> notes
+  & just_release --config <config.json> notes
 
 Configuration
 -------------
