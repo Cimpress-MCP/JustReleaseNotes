@@ -13,6 +13,20 @@ class Commit:
 
 class GitRepo_Test(unittest.TestCase):
 
+    def method_throws(*args, **kwargs):
+        raise Exception("Error")
+
+    @patch("git.Repo.clone_from")
+    def test_GitRepoSetsTheRemoteAndBranch(self, repo_mock):
+        conf = { "Directory" : "testDir", "Branch" : "origin/release/1.2.0" ,"RepositoryUrl" : "git://some.url/repo.git" }
+        mock = MagicMock()
+        mock.create_head = Mock()
+        repo_mock.return_value = mock
+        repo = GitRepo.GitRepo(conf)
+        repo.checkout()
+        mock.create_head.assert_called_once_with("release/1.2.0", "origin/release/1.2.0")
+        repo.checkout()
+
     @patch("git.Repo.clone_from")
     @patch("git.Repo.iter_commits")
     def test_retrieveHistoryProcessesEachCommit(self, iter_commits, repo_mock):
