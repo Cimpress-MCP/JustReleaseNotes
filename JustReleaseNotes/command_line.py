@@ -1,5 +1,6 @@
 import json
 import os
+import os.path
 import argparse
 
 import requests
@@ -32,9 +33,12 @@ def generateForOneWriter(generator, ticketProvider, writerType, directory, fileN
     if fileName is None:
         fileName = "index{0}".format(writer.getExtension())
 
-    f = open(os.path.join(directory, fileName), "r")
-    content = f.read()
-    f.close()
+    content = ""
+    p = os.path.join(directory, fileName)
+    if os.path.isfile(p):
+        f = open(p, "r")
+        content = f.read()
+        f.close()
 
     writer.setInitialContent(content)
     releaseNotes = generator.generateReleaseNotesByPromotedVersions(writer)
