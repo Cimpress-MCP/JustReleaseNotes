@@ -66,11 +66,10 @@ class ReleaseNotes:
                 ticketsSoFar += self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
 
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
-                content = content + [self.__printVersionBlock(version, ticketsSoFar, writer)]
+                content = [self.__printVersionBlock(version, ticketsSoFar, writer)] + content
                 ticketsSoFar = []                
 
         if len(ticketsSoFar) > 0:
-            content = content + [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar, writer)]
-        
-        content.sort(reverse=True)        
-        return "\n".join(content)
+            content = [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar, writer)] + content
+
+        return "\n".join(content).strip(' \t\n\r')

@@ -10,11 +10,11 @@ class HtmlWriter(BaseWriter.BaseWriter):
         return ".html"
 
     def getVersionHeader(self, version):
-        return "<a name=\"{0}\" class=\"version\"></a>".format(version)
+        return "<div style=\"width:100%; border: 0px\"><a name=\"{0}\" class=\"version\"></a>".format(version)
 
     def parseVersionHeader(self, line):
-        if (line.startswith("<a name=\"") and line.endswith("\" class=\"version\"></a>")):
-            return line[9:len(line)-22]
+        if (line.startswith("<div style=\"width:100%; border: 0px\"><a name=\"") and line.endswith("\" class=\"version\"></a>")):
+            return line[46:len(line)-22]
         else:
             return False
 
@@ -26,7 +26,7 @@ class HtmlWriter(BaseWriter.BaseWriter):
 
         version = self.convertVersion(version)
 
-        data = ["<div style=\"width:100%; border: 0px\">", self.getVersionHeader(version), "<h2>" + version]
+        data = [self.getVersionHeader(version), "<h2>" + version]
 
         if date != 'N/A':
             data.append("<sup><small style=\"font-size:10px\"><i> " + date + "</i></small></sup>")
@@ -60,7 +60,7 @@ class HtmlWriter(BaseWriter.BaseWriter):
                         imgHtml += imgFormat.format("Issue Type", ticketInfo["issue_type_icon"])
                     if "priority_icon" in ticketInfo:
                         imgHtml += imgFormat.format("Priority", ticketInfo["priority_icon"])
-                    data.append('<li style="font-size:14px">{0}<a href="{3}">{1}</a> {2}, reported by {4}</li>'.format(
+                    data.append('<li style="font-size:14px">{0}<a href="{3}">{1}</a> {2}, <i>reported by</i> <b>{4}</b></li>'.format(
                         imgHtml, ticketInfo["ticket"], title , ticketInfo["html_url"], ticketInfo["reporter"]))
 
         if appendStabilityImprovements:
