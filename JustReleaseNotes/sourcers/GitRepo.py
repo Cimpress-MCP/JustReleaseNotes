@@ -58,14 +58,10 @@ class GitRepo:
             self.__repoX = Repo.clone_from(self.__repo, path)
             release_notes_head = self.__repoX.create_head(self.__branch, self.__remote + "/" + self.__branch)
             self.__repoX.head.reference = release_notes_head
+            self.__repoX.head.reset(index=True, working_tree=True)
         except:
             self.__repoX = Repo(path)
             self.__repoX.head.reference = self.__repoX.heads[self.__branch]
-
-
-        self.__repoX.head.reset(index=True, working_tree=True)
-        o = self.__repoX.remotes[self.__remote]
-        o.pull()
 
     def setParents(self, commit):
         if len(commit.parents) == 0:
