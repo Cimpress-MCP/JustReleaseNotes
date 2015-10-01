@@ -1,8 +1,11 @@
-## 0.1.5 ##
+## 0.1.8 ##
 
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#9](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/9) Enable incremental generation, *reported by* **rnowosielski**
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#5](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/5) Change the way the code in invoked so that multiple formats can be generated simultaneously, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#43](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/43) If the file doesn't exist, release notes throw, *reported by* **rnowosielski**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#42](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/42) Adding 2 different variations of Markdown writers; Exposing reporter on the notes; Incremental generation, *reported by* **rnowosielski**
 * <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#41](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/41) Fix for checkout, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#40](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/40) Provide a way of working in place, *reported by* **rnowosielski**
 * <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#39](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/39) Add ability to show tickets that are completed but not part of any version, *reported by* **rnowosielski**
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#38](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/38) Expose the reporter in the release notes, *reported by* **rnowosielski**
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#36](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/36) There is no way to represent tickets that were committed after any label, *reported by* **rnowosielski**
