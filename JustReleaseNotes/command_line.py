@@ -54,6 +54,7 @@ def generate_release_notes(configFile):
         fileContents = file.read()
         releaseNotesConfig = EnvReplacer.replace(json.loads(fileContents))
         currentDir = os.getcwd()
+
         if not os.path.isabs(releaseNotesConfig["pathToSave"]):
             releaseNotesConfig["pathToSave"] = os.path.join(currentDir, releaseNotesConfig["pathToSave"])
 
@@ -69,11 +70,17 @@ def generate_release_notes(configFile):
             ticketProvider = JustReleaseNotes.issuers.factory.create(issuesConf)
 
             directory = os.path.join(releaseNotesConfig["pathToSave"],packageName)
-            conf["Source"]["Directory"] = directory
+
+            if "Directory" in conf["Source"]:
+                if not os.path.isabs(conf["Source"]["Directory"]):
+                    conf["Source"]["Directory"] = os.path.join(currentDir, conf["Source"]["Directory"])
+            else:
+                conf["Source"]["Directory"] = directory
+
             repo = JustReleaseNotes.sourcers.factory.create(conf["Source"])
 
-            if not os.path.exists(directory):
-                os.makedirs(directory)
+            if not os.path.exists(conf["Source"]["Directory"]):
+                os.makedirs(conf["Source"]["Directory"])
 
             generator = ReleaseNotes(conf, ticketProvider, repo, promotedVersionsInfo)
             writerConfigs = conf["ReleaseNotesWriter"]
