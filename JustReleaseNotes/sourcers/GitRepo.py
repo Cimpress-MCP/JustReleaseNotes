@@ -74,9 +74,9 @@ class GitRepo:
         self.commitParents[commit.hexsha] = []
         for p in commit.parents:
             self.commitParents[commit.hexsha] = self.commitParents[commit.hexsha] + [p.hexsha]
-            self.setParents(p)
-            
-    def __getParentsListForVersion(self, hash, version, resultsSoFar):
+            self.__processCommit(p)
+
+    def __getParentsListForVersion(self, hash, resultsSoFar):
         if hash in resultsSoFar:
             return []
         if hash not in self.commitParents:
@@ -84,7 +84,7 @@ class GitRepo:
         results = [hash]
         for p in self.commitParents[hash]:
             if p not in self.versionsByGitHash:
-                results = results + self.__getParentsListForVersion(p, version, resultsSoFar + results)
+                results = results + self.__getParentsListForVersion(p, resultsSoFar + results)
         return results
 
     def processCommit(self, commitHash):
@@ -155,7 +155,7 @@ class GitRepo:
             else:
                 self.versionsByGitHash[hexsha] = version     
 
-            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha,version, [])
+            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha, [])
 
         self.__addHeadIfNotPresent()
         self.__optimizeHistoryByVersion()
@@ -165,4 +165,4 @@ class GitRepo:
         if hexsha not in self.versionsByGitHash:
             version = str(sys.maxsize)
             self.versionsByGitHash[hexsha] = version
-            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha, version, [])
+            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha, [])

@@ -1,34 +1,28 @@
+from datetime import datetime
+
+
 class ReleaseNotes:
 
     __PendingPromotionCaption = "Pending promotion"
     __conf = {}
-    __ticketsByVersion = {}
     __promotedVersionsInfo = {}
-    __ticketReplacements = {}
     __ticketProvider = {}
+    __fromDate = 0
 
     def __init__(self, conf, ticketProvider, repo, promotedVersionsInfo):
-        self.__ticketsByVersion = {}
         self.__conf = conf
         self.__repo = repo
         self.__promotedVersionsInfo = promotedVersionsInfo
-        self.__ticketProvider = ticketProvider;
+        self.__ticketProvider = ticketProvider
 
         self.__repo.checkout()
         self.__repo.retrieveHistory()
-        self.__repo.retrieveVersionsByGitHash( list(self.__promotedVersionsInfo.keys()) )
-        self.__computeTicketsByVersion()
-        
-    def __computeTicketsByVersion(self):
-        currentVersion = "latest"        
-        self.__ticketsByVersion[currentVersion] = []
-        for hash in self.__repo.gitCommitsList:
-            if hash in self.__repo.versionsByGitHash:
-                currentVersion = self.__repo.versionsByGitHash[hash]
-                self.__ticketsByVersion[currentVersion] = []
-            tickets = self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
-            self.__ticketsByVersion[currentVersion] = self.__ticketsByVersion[currentVersion] + tickets
-     
+        self.__repo.retrieveVersionsByGitHash(list(self.__promotedVersionsInfo.keys()))
+
+        if "OldestCommitToProcess" in conf["Source"]:
+            oldestCommitToProcess = conf["Source"]["OldestCommitToProcess"]
+            self.__fromDate = self.__repo.gitDatesByHash[oldestCommitToProcess]
+
     def __printVersionBlock(self, version, tickets, writer):
         date = "N/A"
         deps = {}
@@ -54,15 +48,17 @@ class ReleaseNotes:
         
         content = []
         for version in sortedVersions:
+
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
                 print("Generating info for version " + version)
                 
             for hash in hashesInVersion[version]:
+                if self.__repo.gitDatesByHash[hash] < self.__fromDate:
+                    continue
                 if hash in hashAlreadySeen:
                     continue
                 hashAlreadySeen = hashAlreadySeen + [hash]
-                if hash not in self.__repo.gitCommitMessagesByHash:
-                    self.__repo.processCommit(hash)
+
                 ticketsSoFar += self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
 
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
