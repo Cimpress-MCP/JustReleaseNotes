@@ -55,7 +55,7 @@ Configuration file is in flux. For now it is a json looking something like this:
                     "HtmlUrl" : ...,
                     "Authorization" : ...,
                     "Url" : ...,
-                    "WebImagesPath" : ...
+                    "WebImagesPath" : ...,
                     "TicketRegex" : ...
                 }],
                 "Releases" : {
@@ -65,14 +65,16 @@ Configuration file is in flux. For now it is a json looking something like this:
                     "StorageUrl" : ...
                 },
                 "Source" : {
-                    "Provider" : <source provider>
-                    "RepositoryUrl" : ...
-                    "Remote" : ...
-                    "Branch" : ...
-                    "VersionTagRegex" : "^([0-9]+\\.[0-9]+\\.[0-9]+)$"
+                    "Provider" : <source provider>,
+                    "RepositoryUrl" : ...,
+                    "Remote" : ...,
+                    "Branch" : ...,
+                    "VersionTagRegex" : "^([0-9]+\\.[0-9]+\\.[0-9]+)$",
+					"OldestCommitToProcess" : <commit hexsha>,
+					"ExcludeCommitsWithMessageMatchingRegex" : <regex>
                 },
                 "ReleaseNotesWriter" : [{
-                    "Provider" : ...,
+                    "Provider" : <notes writer provider>
                     "PathToSave" : ...
                 }]
             }
@@ -81,7 +83,7 @@ Configuration file is in flux. For now it is a json looking something like this:
 
 where
 
-``notes writer`` is either:
+``notes writer provider`` is either:
 
 - HtmlWriter
 - MarkdownWriter
@@ -96,7 +98,7 @@ where
 - JiraIssues
 - GitHubIssues
 
-It is also possible to specify an array of issue providers, then all of them will be used to retireve information about tickets.
+It is also possible to specify an array of issue providers, then all of them will be used to retrieve information about tickets.
 
 ``source provider`` is currently only:
 
