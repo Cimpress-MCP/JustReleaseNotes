@@ -25,6 +25,10 @@ class GitRepo:
         self.__directory = conf["Directory"]
         self.__repoX = ""
         self.__versionTagRegex = "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+        self.__excludeCommitsWithMessageMatchingRegex = None
+
+        if "ExcludeCommitsWithMessageMatchingRegex" in conf:
+            self.__excludeCommitsWithMessageMatchingRegex = conf["ExcludeCommitsWithMessageMatchingRegex"]
 
         if "VersionTagRegex" in conf:
             self.__versionTagRegex = conf["VersionTagRegex"]
@@ -91,6 +95,11 @@ class GitRepo:
         self.__processCommit(self.__repoX.commit(commitHash))
 
     def __processCommit(self, commit):
+        if self.__excludeCommitsWithMessageMatchingRegex is not None:
+            p = re.compile(self.__excludeCommitsWithMessageMatchingRegex)
+            if p.match(commit.message):
+                return
+
         self.gitCommitMessagesByHash[commit.hexsha] = commit.summary + commit.message
         self.gitCommitsList.append(commit.hexsha)
         self.gitDatesByHash[commit.hexsha] = commit.authored_date
