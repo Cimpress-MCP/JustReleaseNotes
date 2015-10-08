@@ -7,6 +7,7 @@ class GitRepo:
     __packageName = ""
     __remote = "origin"
     __branch = "master"
+    __recursionLimit = 16384
     
     gitCommitsList = []
     gitCommitMessagesByHash = {}
@@ -26,6 +27,13 @@ class GitRepo:
         self.__repoX = ""
         self.__versionTagRegex = "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
         self.__excludeCommitsWithMessageMatchingRegex = None
+
+        # TODO: Remove as part of #48 Refactor recursive calls in sourcers
+        # the default stack size for recursive calls in Python is set to 1000, which can easily overflow with bigger repositories
+        if (sys.getrecursionlimit() < self.__recursionLimit):
+            print("Increasing the stack size for recursive calls from {0} to {1}"
+                  .format(sys.getrecursionlimit(), self.__recursionLimit))
+            sys.setrecursionlimit(self.__recursionLimit)
 
         if "ExcludeCommitsWithMessageMatchingRegex" in conf:
             self.__excludeCommitsWithMessageMatchingRegex = conf["ExcludeCommitsWithMessageMatchingRegex"]
