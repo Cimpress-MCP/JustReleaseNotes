@@ -1,3 +1,12 @@
+## 0.1.9 ##
+
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#48](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/48) Refactor recursive calls in sourcers, *reported by* **mmaruniak**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#47](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/47) Add Unicode support for ticket reporter names, *reported by* **mmaruniak**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#46](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/46) Provide a way to exclude commits matching specific commit message, *reported by* **mmaruniak**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#45](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/45) [#33](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/33) Add 'OldestCommitToProcess' setting, *reported by* **mmaruniak**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#33](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/33) Filter git commits by date and/or hash, *reported by* **istanishev**
+* Stability improvements
+
 ## 0.1.8 ##
 
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#9](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/9) Enable incremental generation, *reported by* **rnowosielski**
