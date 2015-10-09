@@ -1,4 +1,4 @@
-import re
+import re, sys
 from JustReleaseNotes.writers import BaseWriter
 
 class HtmlWriter(BaseWriter.BaseWriter):
@@ -60,12 +60,22 @@ class HtmlWriter(BaseWriter.BaseWriter):
                         imgHtml += imgFormat.format("Issue Type", ticketInfo["issue_type_icon"])
                     if "priority_icon" in ticketInfo:
                         imgHtml += imgFormat.format("Priority", ticketInfo["priority_icon"])
+
+                    reporter = ""
+                    if sys.version_info < (3,):
+                        reporter = ticketInfo["reporter"].encode('utf-8')
+                    else:
+                        reporter = bytearray(ticketInfo["reporter"], 'utf-8').decode('utf-8')
+
                     data.append('<li style="font-size:14px">{0}<a href="{3}">{1}</a> {2}, <i>reported by</i> <b>{4}</b></li>'.format(
-                        imgHtml, ticketInfo["ticket"], title , ticketInfo["html_url"], ticketInfo["reporter"]))
+                        imgHtml, ticketInfo["ticket"], title , ticketInfo["html_url"], reporter))
 
         if appendStabilityImprovements:
             data.append("<li style=\"font-size:14px\">Stability improvements</li>")
 
         data += ["</ul>", "</div>", ""]
 
-        return '\n'.join(data)
+        if sys.version_info < (3,):
+            return '\n'.join(x.decode('utf-8') for x in data)
+        else:
+            return '\n'.join(x for x in data)

@@ -4,11 +4,11 @@ from mock import Mock, MagicMock, mock_open, patch
 
 class Commit:
 
-    def __init__(self, hexsha):
+    def __init__(self, hexsha, message):
         self.hexsha = hexsha
         self.parents = []
         self.summary = ""
-        self.message = ""
+        self.message = message
         self.authored_date = ""
 
 class GitRepo_Test(unittest.TestCase):
@@ -30,9 +30,9 @@ class GitRepo_Test(unittest.TestCase):
     @patch("git.Repo.clone_from")
     @patch("git.Repo.iter_commits")
     def test_retrieveHistoryProcessesEachCommit(self, iter_commits, repo_mock):
-        commit1 = Commit("1")
-        commit2 = Commit("2")
-        commit3 = Commit("3")
+        commit1 = Commit("1", "Message 1")
+        commit2 = Commit("2", "Message 2")
+        commit3 = Commit("3", "Message 3")
         iter_commits.return_value = [commit1, commit3, commit2]
         mock = MagicMock()
         mock.iter_commits = iter_commits
@@ -51,10 +51,34 @@ class GitRepo_Test(unittest.TestCase):
         self.assertIn("3", repo.gitCommitsList)
         self.assertIn("3", repo.gitDatesByHash)
 
-    def test_setParentsTraersesChildrenAndDelasWithCycles(self):
+    @patch("git.Repo.clone_from")
+    @patch("git.Repo.iter_commits")
+    def test_retrieveHistoryIgnoresCommitsMatchConfiguredRegex(self, iter_commits, repo_mock):
+        commit1 = Commit("1", "Message 1")
+        commit2 = Commit("2", "Message 2")
+        commit3 = Commit("3", "Message 3")
+        iter_commits.return_value = [commit1, commit3, commit2]
+        mock = MagicMock()
+        mock.iter_commits = iter_commits
+        repo_mock.return_value = mock
+        conf = { "Directory" : "testDir", "RepositoryUrl" : "git://some.url/repo.git", "ExcludeCommitsWithMessageMatchingRegex" : "Message 2[.]*" }
+        repo = GitRepo.GitRepo(conf)
+        repo.checkout()
+        repo.retrieveHistory()
+        self.assertIn("1", repo.gitCommitMessagesByHash)
+        self.assertIn("1", repo.gitCommitsList)
+        self.assertIn("1", repo.gitDatesByHash)
+        self.assertNotIn("2", repo.gitCommitMessagesByHash)
+        self.assertNotIn("2", repo.gitCommitsList)
+        self.assertNotIn("2", repo.gitDatesByHash)
+        self.assertIn("3", repo.gitCommitMessagesByHash)
+        self.assertIn("3", repo.gitCommitsList)
+        self.assertIn("3", repo.gitDatesByHash)
+
+    def test_setParentsTraversesChildrenAndDealsWithCycles(self):
         conf = { "Directory" : "testDir", "RepositoryUrl" : "git://some.url/repo.git" }
         repo = GitRepo.GitRepo(conf)
-        commit = Commit("32423424af")
+        commit = Commit("32423424af", "Message")
         commit.message = "test message"
         commit.summary = "some summary"
         commit.authored_date = ""
@@ -64,13 +88,13 @@ class GitRepo_Test(unittest.TestCase):
         self.assertIn("32423424af", repo.gitCommitsList)
         self.assertIn("32423424af", repo.gitDatesByHash)
 
-    def test_setParentsTraersesChildrenAndDelasWithCycles(self):
+    def test_setParentsTraversesChildrenAndDealsWithCycles(self):
         conf = { "Directory" : "testDir", "RepositoryUrl" : "git://some.url/repo.git" }
         repo = GitRepo.GitRepo(conf)
-        commit = Commit("32423424af")
-        child = Commit("1")
+        commit = Commit("32423424af", "Message")
+        child = Commit("1", "Message")
         child.parents = [commit]
-        commit.parents = [ child, Commit("2") ]
+        commit.parents = [ child, Commit("2", "Message") ]
         repo.setParents(commit)
         self.assertEqual(2, len(repo.commitParents["32423424af"]))
         self.assertIn("32423424af", repo.commitParents)
@@ -79,7 +103,7 @@ class GitRepo_Test(unittest.TestCase):
     @patch("git.Repo.clone_from")
     @patch("os.path.isdir")
     @patch("os.makedirs")
-    def test_checkourt(self, makedirs_mock, isdir_mock, repo_mock):
+    def test_checkout(self, makedirs_mock, isdir_mock, repo_mock):
         isdir_mock.return_value = False
         conf = { "Directory" : "testDir", "RepositoryUrl" : "git://some.url/repo.git" }
         repo = GitRepo.GitRepo(conf)

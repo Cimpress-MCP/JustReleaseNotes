@@ -7,6 +7,7 @@ class GitRepo:
     __packageName = ""
     __remote = "origin"
     __branch = "master"
+    __recursionLimit = 16384
     
     gitCommitsList = []
     gitCommitMessagesByHash = {}
@@ -25,6 +26,17 @@ class GitRepo:
         self.__directory = conf["Directory"]
         self.__repoX = ""
         self.__versionTagRegex = "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+        self.__excludeCommitsWithMessageMatchingRegex = None
+
+        # TODO: Remove as part of #48 Refactor recursive calls in sourcers
+        # the default stack size for recursive calls in Python is set to 1000, which can easily overflow with bigger repositories
+        if (sys.getrecursionlimit() < self.__recursionLimit):
+            print("Increasing the stack size for recursive calls from {0} to {1}"
+                  .format(sys.getrecursionlimit(), self.__recursionLimit))
+            sys.setrecursionlimit(self.__recursionLimit)
+
+        if "ExcludeCommitsWithMessageMatchingRegex" in conf:
+            self.__excludeCommitsWithMessageMatchingRegex = conf["ExcludeCommitsWithMessageMatchingRegex"]
 
         if "VersionTagRegex" in conf:
             self.__versionTagRegex = conf["VersionTagRegex"]
@@ -74,9 +86,9 @@ class GitRepo:
         self.commitParents[commit.hexsha] = []
         for p in commit.parents:
             self.commitParents[commit.hexsha] = self.commitParents[commit.hexsha] + [p.hexsha]
-            self.setParents(p)
-            
-    def __getParentsListForVersion(self, hash, version, resultsSoFar):
+            self.__processCommit(p)
+
+    def __getParentsListForVersion(self, hash, resultsSoFar):
         if hash in resultsSoFar:
             return []
         if hash not in self.commitParents:
@@ -84,13 +96,18 @@ class GitRepo:
         results = [hash]
         for p in self.commitParents[hash]:
             if p not in self.versionsByGitHash:
-                results = results + self.__getParentsListForVersion(p, version, resultsSoFar + results)
+                results = results + self.__getParentsListForVersion(p, resultsSoFar + results)
         return results
 
     def processCommit(self, commitHash):
         self.__processCommit(self.__repoX.commit(commitHash))
 
     def __processCommit(self, commit):
+        if self.__excludeCommitsWithMessageMatchingRegex is not None:
+            p = re.compile(self.__excludeCommitsWithMessageMatchingRegex)
+            if p.match(commit.message):
+                return
+
         self.gitCommitMessagesByHash[commit.hexsha] = commit.summary + commit.message
         self.gitCommitsList.append(commit.hexsha)
         self.gitDatesByHash[commit.hexsha] = commit.authored_date
@@ -155,7 +172,7 @@ class GitRepo:
             else:
                 self.versionsByGitHash[hexsha] = version     
 
-            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha,version, [])
+            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha, [])
 
         self.__addHeadIfNotPresent()
         self.__optimizeHistoryByVersion()
@@ -165,4 +182,4 @@ class GitRepo:
         if hexsha not in self.versionsByGitHash:
             version = str(sys.maxsize)
             self.versionsByGitHash[hexsha] = version
-            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha, version, [])
+            self.gitHistoryByVersion[version] = self.__getParentsListForVersion(hexsha, [])

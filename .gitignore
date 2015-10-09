@@ -5,3 +5,4 @@ GitReleaseNotes/output/
 *.json
 JustReleaseNotes.egg-info/
 dist/
+build/
