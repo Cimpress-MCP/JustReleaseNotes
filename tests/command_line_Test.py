@@ -11,7 +11,7 @@ else:
     import builtins
 
 
-class ReleaseNote_Test(unittest.TestCase):
+class CommandLine_Test(unittest.TestCase):
 
     mockedData = '{ '\
                       '"pathToSave": "..", ' \
@@ -37,8 +37,9 @@ class ReleaseNote_Test(unittest.TestCase):
     @patch("JustReleaseNotes.writers.factory")
     @patch("os.path.exists")
     @patch("os.makedirs")
+    @patch("io.open")
     def test_justRelesdeNotes_withDefaultConfig_NoData_DoesNotRaise_ProducesEmptyOutput(self, issuers_factory, repo_factory,
-        writers_factory, path_exists, path_makedirs):
+        writers_factory, path_exists, path_makedirs, mocked_io_open):
 
         writer_mock = MagicMock()
         writers_factory.create.return_value = writer_mock
@@ -46,9 +47,7 @@ class ReleaseNote_Test(unittest.TestCase):
         mocked_open = mock_open(read_data=self.mockedData)
         with patch.object(builtins, 'open', mocked_open):
             JustReleaseNotes.command_line.generate_release_notes("config.json")
-
-        mocked_open.assert_called_with(os.getcwd() + os.sep + ".." + os.sep + "JustReleaseNotes" + os.sep + "index.ext", "wb")
-        mocked_open().write.assert_called_once_with(b'')
+        mocked_open.assert_called_with('config.json', "r")
 
     @patch("sys.exit")
     def test_main_withDefaultConfig_NoData_DoesNotRaise_ProducesEmptyOutput(self, sysExit):
@@ -57,3 +56,4 @@ class ReleaseNote_Test(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

@@ -4,6 +4,7 @@ import os.path
 import argparse
 
 import requests
+import io
 
 import JustReleaseNotes.artifacters
 import JustReleaseNotes.writers
@@ -33,20 +34,20 @@ def generateForOneWriter(generator, ticketProvider, writerType, directory, fileN
     if fileName is None:
         fileName = "index{0}".format(writer.getExtension())
 
-    content = ""
+    content = u""
     p = os.path.join(directory, fileName)
     if os.path.isfile(p):
-        f = open(p, "r")
-        content = f.read()
-        f.close()
+        with io.open(p,'r',encoding='utf8') as f:
+            content += f.read()
 
     writer.setInitialContent(content)
-    releaseNotes = generator.generateReleaseNotesByPromotedVersions(writer)
+    releaseNotes = u""
+    releaseNotes += generator.generateReleaseNotesByPromotedVersions(writer)
 
     print("\nStoring release notes at {0}".format(os.path.join(directory, fileName)))
-    f = open(os.path.join(directory, fileName), "wb")
-    f.write(releaseNotes.encode('utf-8'))
-    f.close()
+    fileName = os.path.join(directory, fileName)
+    with io.open(fileName,'w',encoding='utf8') as f:
+        f.write(releaseNotes)
 
 def generate_release_notes(configFile):
         requests.packages.urllib3.disable_warnings()

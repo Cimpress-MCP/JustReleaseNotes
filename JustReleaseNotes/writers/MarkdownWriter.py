@@ -49,7 +49,7 @@ class MarkdownWriter(BaseWriter.BaseWriter):
                     iconPart = ""
                     if "issue_type_icon" in ticketInfo:
                         iconPart = self.getImageBlock(ticketInfo["issue_type_icon"])
-                    data.append("* {0} [{1}]({3}) {2}, *reported by* **{4}**".format(iconPart, ticketInfo["ticket"],
+                    data.append("* {0}[{1}]({3}) {2}, *reported by* **{4}**".format(iconPart, ticketInfo["ticket"],
                                                               title.encode('ascii','ignore').decode("ascii") ,
                                                               ticketInfo["html_url"],
                                                               ticketInfo["reporter"]))
@@ -57,4 +57,5 @@ class MarkdownWriter(BaseWriter.BaseWriter):
         if appendStabilityImprovements:
             data.append("* Stability improvements")
 
-        return '\n'.join(data) + '\n'
+        block = '\n'.join(data).strip();
+        return block

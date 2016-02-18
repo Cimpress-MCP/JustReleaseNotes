@@ -76,6 +76,6 @@ class HtmlWriter(BaseWriter.BaseWriter):
         data += ["</ul>", "</div>", ""]
 
         if sys.version_info < (3,):
-            return '\n'.join(x.decode('utf-8') for x in data)
+            return '\n'.join(x.decode('utf-8') for x in data).strip()
         else:
-            return '\n'.join(x for x in data)
+            return '\n'.join(x for x in data).strip()

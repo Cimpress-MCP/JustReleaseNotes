@@ -63,7 +63,7 @@ class ReleaseNotes:
 
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
                 content = [self.__printVersionBlock(version, ticketsSoFar, writer)] + content
-                ticketsSoFar = []                
+                ticketsSoFar = []
 
         if len(ticketsSoFar) > 0:
             content = [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar, writer)] + content
