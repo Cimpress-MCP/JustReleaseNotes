@@ -45,7 +45,7 @@ class HtmlWriter_Test(unittest.TestCase):
                          '</i></div>\n'
                          '<ul>\n'
                          '<li style="font-size:14px"><a href="http://some.url">ABCD-2</a> ABCD2 ticket, <i>reported by</i> <b>test user</b></li>\n'
-                         '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket, <i>reported by</i> <b>test user</b></li>\n</ul>\n</div>\n',
+                         '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket, <i>reported by</i> <b>test user</b></li>\n</ul>\n</div>',
                          output)
 
     def test_embeddedLinkProvided_ReplacesContentWithLink(self):
@@ -67,7 +67,7 @@ class HtmlWriter_Test(unittest.TestCase):
                          '</i></div>\n'
                          '<ul>\n'
                          '<li style="font-size:14px"><a href="http://some.url">ABCD-2</a> ABCD2 ticket that references <a href="http://some.url/ABCD-1">ABCD-1</a>, <i>reported by</i> <b>test user</b></li>\n'
-                         '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket that references <a href="http://some.url/ABCD-2">ABCD-2</a>, <i>reported by</i> <b>test user</b></li>\n</ul>\n</div>\n',
+                         '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket that references <a href="http://some.url/ABCD-2">ABCD-2</a>, <i>reported by</i> <b>test user</b></li>\n</ul>\n</div>',
                          output)
 
     def test_setInitialContentParsesHtml(self):

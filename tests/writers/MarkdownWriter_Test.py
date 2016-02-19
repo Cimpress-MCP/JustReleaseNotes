@@ -58,8 +58,8 @@ class MarkdownWriter_Test(unittest.TestCase):
         tickets = ["DBA-1", "DBA-2"]
         output = writer.printVersionBlock(deps, version, date, tickets)
         self.assertEqual(
-            '## 1.0.2.0 ##\n01-02-2015\n\n*  [DBA-2](http://some.url) DBA2 ticket that references'
-            ' [#DBA-1](http://some.url/DBA-1), *reported by* **test user**\n*  [DBA-1](http://some.url) DBA1 ticket that references '
+            '## 1.0.2.0 ##\n01-02-2015\n\n* [DBA-2](http://some.url) DBA2 ticket that references'
+            ' [#DBA-1](http://some.url/DBA-1), *reported by* **test user**\n* [DBA-1](http://some.url) DBA1 ticket that references '
             '[#DBA-2](http://some.url/DBA-2), *reported by* **test user**\n',
             output)
 
@@ -106,7 +106,7 @@ class MarkdownWriter_Test(unittest.TestCase):
         mockedTicketProvider = Mock()
         mockedData='## 1.0.0.1 ##\n' \
                    'SomeCustomStuff' \
-                   'possibly even unstructured\n some comments etc'
+                   'possibly even unstructured\n some comments etc\n'
         writer = MarkdownWriter.MarkdownWriter(mockedTicketProvider)
         output = writer.setInitialContent(mockedData)
         self.assertEqual(1, len(output))

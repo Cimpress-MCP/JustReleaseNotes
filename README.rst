@@ -70,8 +70,8 @@ Configuration file is in flux. For now it is a json looking something like this:
                     "Remote" : ...,
                     "Branch" : ...,
                     "VersionTagRegex" : "^([0-9]+\\.[0-9]+\\.[0-9]+)$",
-					"OldestCommitToProcess" : <commit hexsha>,
-					"ExcludeCommitsWithMessageMatchingRegex" : <regex>
+                    "OldestCommitToProcess" : <commit hexsha>,
+                    "ExcludeCommitsWithMessageMatchingRegex" : <regex>
                 },
                 "ReleaseNotesWriter" : [{
                     "Provider" : <notes writer provider>
