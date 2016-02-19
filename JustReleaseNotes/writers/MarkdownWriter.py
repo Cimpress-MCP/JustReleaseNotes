@@ -25,7 +25,7 @@ class MarkdownWriter(BaseWriter.BaseWriter):
     def printVersionBlock(self, deps, version, date, tickets):
         baseoutput = BaseWriter.BaseWriter.printVersionBlock(self, deps, version, date, tickets)
         if baseoutput is not None:
-            return baseoutput
+            return baseoutput + "\n"
 
         version = self.convertVersion(version)
         data = [self.getVersionHeader(version)]
@@ -57,5 +57,5 @@ class MarkdownWriter(BaseWriter.BaseWriter):
         if appendStabilityImprovements:
             data.append("* Stability improvements")
 
-        block = '\n'.join(data).strip() + '\n'
+        block = '\n'.join(data).strip() + "\n"
         return block
