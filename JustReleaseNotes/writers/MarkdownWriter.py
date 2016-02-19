@@ -57,5 +57,5 @@ class MarkdownWriter(BaseWriter.BaseWriter):
         if appendStabilityImprovements:
             data.append("* Stability improvements")
 
-        block = '\n'.join(data).strip();
+        block = '\n'.join(data).strip() + '\n'
         return block

@@ -62,7 +62,9 @@ class ReleaseNotes:
                 ticketsSoFar += self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
 
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
-                content = [self.__printVersionBlock(version, ticketsSoFar, writer)] + content
+                block = self.__printVersionBlock(version, ticketsSoFar, writer)
+                if len(block) > 0:
+                    content = [block] + content
                 ticketsSoFar = []
 
         if len(ticketsSoFar) > 0:
