@@ -36,3 +36,6 @@ class BaseWriter:
         if version in self.versionsAlreadyPresent.keys():
             return '\n'.join(self.versionsAlreadyPresent[version]).strip()
         return None
+
+    def writeDocument(self, content):
+        return "\n".join(content).strip()

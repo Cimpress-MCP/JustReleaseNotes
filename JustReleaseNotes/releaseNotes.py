@@ -70,5 +70,5 @@ class ReleaseNotes:
         if len(ticketsSoFar) > 0:
             content = [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar, writer)] + content
 
-        return "\n".join(content).strip()
+        return writer.writeDocument(content)
 
