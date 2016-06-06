@@ -87,6 +87,9 @@ where
 
 - HtmlWriter
 - MarkdownWriter
+- GitHubMarkdownWriter
+- StashMarkdownWriter
+- JsonWriter
 
 ``releases provider`` is either:
 
