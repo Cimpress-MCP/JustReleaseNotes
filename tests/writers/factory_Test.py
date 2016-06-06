@@ -13,6 +13,14 @@ class factory_Test(unittest.TestCase):
         ticketProvider = Mock()
         self.assertIsNotNone(JustReleaseNotes.writers.factory.create("HtmlWriter", ticketProvider))
 
+    def test_factoryRetrievesJsonWriter(self):
+        ticketProvider = Mock()
+        self.assertIsNotNone(JustReleaseNotes.writers.factory.create("JsonWriter", ticketProvider))
+
     def test_failsIfIssuerUnknown(self):
         with self.assertRaises(Exception):
             JustReleaseNotes.writers.writers.factory.create("abrakadabra", None)
+
+
+if __name__ == '__main__':
+    unittest.main()
