@@ -42,7 +42,7 @@ class JsonWriter(BaseWriter.BaseWriter):
             ticketsInThisVersion.append({"title": "Stability Improvements"})
 
         # the entry contains the version and the tickets, which is serialized into a string
-        entry = {"version": version, "tickets": ticketsInThisVersion}
+        entry = {"version": version, "tickets": ticketsInThisVersion, "date": date}
         self.versionsAlreadyPresent[version] = entry
         block = json.dumps(entry)
         return block
