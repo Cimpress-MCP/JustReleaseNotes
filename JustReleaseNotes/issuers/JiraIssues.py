@@ -46,15 +46,17 @@ class JiraIssues(BaseIssues.BaseIssues):
                 "title" : title }
 
         if "fields" in data.keys():
-            title = data["fields"]["summary"]
+            fields = data["fields"]
+            title = fields["summary"]
             ret["title"] = title
             for ticket in self.extractTicketsFromMessage(title):
                 embedded_links[ticket] = "{0}/{1}".format(self.__conf["HtmlUrl"],ticket)
-            ret["state_icon"] = self.__fieldIcon(data["fields"]["status"])
-            ret["issue_type_icon"] = self.__fieldIcon(data["fields"]["issuetype"])
-            ret["priority_icon"] = self.__fieldIcon(data["fields"]["priority"])
+            ret["state_icon"] = self.__fieldIcon(fields["status"])
+            ret["issue_type_icon"] = self.__fieldIcon(fields["issuetype"])
+            ret["priority_icon"] = self.__fieldIcon(fields["priority"])
             ret["embedded_link"] = embedded_links
-            ret["reporter"] = data["fields"]["reporter"]["displayName"]
+            ret["reporter"] = fields["reporter"]["displayName"]
+            ret["tags"] = fields["labels"]
         else:
             return None
 
