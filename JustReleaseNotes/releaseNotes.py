@@ -23,8 +23,7 @@ class ReleaseNotes:
             oldestCommitToProcess = conf["Source"]["OldestCommitToProcess"]
             self.__fromDate = self.__repo.gitDatesByHash[oldestCommitToProcess]
 
-    def __printVersionBlock(self, version, tickets, writer):
-        date = "N/A"
+    def __printVersionBlock(self, version, tickets, writer, date):
         deps = {}
         if version != self.__PendingPromotionCaption:
             if version in self.__promotedVersionsInfo:
@@ -45,14 +44,17 @@ class ReleaseNotes:
         hashAlreadySeen = []
         sortedVersions = [] + list(hashesInVersion.keys())
         sortedVersions.sort(key=lambda s: list(map(int, s.split('.'))))
-        
+
+        latestCommit = 0
+
         content = []
         for version in sortedVersions:
 
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
                 print("Generating info for version " + version)
-                
+
             for hash in hashesInVersion[version]:
+                latestCommit = self.__repo.gitDatesByHash[hash] if latestCommit < self.__repo.gitDatesByHash[hash] else latestCommit
                 if self.__repo.gitDatesByHash[hash] < self.__fromDate:
                     continue
                 if hash in hashAlreadySeen:
@@ -62,13 +64,13 @@ class ReleaseNotes:
                 ticketsSoFar += self.__ticketProvider.extractTicketsFromMessage(self.__repo.gitCommitMessagesByHash[hash])
 
             if version in self.__promotedVersionsInfo or len(self.__promotedVersionsInfo.keys()) == 0:
-                block = self.__printVersionBlock(version, ticketsSoFar, writer)
+                block = self.__printVersionBlock(version, ticketsSoFar, writer, latestCommit)
                 if len(block) > 0:
                     content = [block] + content
                 ticketsSoFar = []
 
         if len(ticketsSoFar) > 0:
-            content = [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar, writer)] + content
+            content = [self.__printVersionBlock(self.__PendingPromotionCaption, ticketsSoFar, writer, latestCommit)] + content
 
         return writer.writeDocument(content)
 
