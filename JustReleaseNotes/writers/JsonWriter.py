@@ -21,7 +21,7 @@ class JsonWriter(BaseWriter.BaseWriter):
 
         # get the content of a specific version if already present
         if version in self.versionsAlreadyPresent.keys():
-            return json.dumps(self.versionsAlreadyPresent[version])
+            return json.dumps(self.versionsAlreadyPresent[version], indent=2, sort_keys=True)
 
         # sort the ticket
         uniqTickets = sorted(set(tickets), reverse=True)
@@ -44,10 +44,11 @@ class JsonWriter(BaseWriter.BaseWriter):
         # the entry contains the version and the tickets, which is serialized into a string
         entry = {"version": version, "tickets": ticketsInThisVersion, "date": date}
         self.versionsAlreadyPresent[version] = entry
-        block = json.dumps(entry)
+        block = json.dumps(entry, indent=2, sort_keys=True)
         return block
 
     # overrides the default behavior of generating the document since we need valid JSON
     def writeDocument(self, content):
         versions = ",".join(content).strip()
-        return "[" + versions + "]"
+        data = json.loads("[" + versions + "]")
+        return json.dumps(data, indent=2, sort_keys=True)
