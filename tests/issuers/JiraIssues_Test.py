@@ -14,6 +14,7 @@ class JiraIssues_Test(unittest.TestCase):
                      '"status" : { "name" : "New", "iconUrl" : "http://site.com/imageUrl.png" },' \
                      '"issuetype" : { "name" : "Task", "iconUrl" : "http://site.com/imageUrl.png" },'\
                      '"priority" : { "name" : "Critical", "iconUrl" : "http://site.com/imageUrl.png" },'\
+                     '"labels" : [],'\
                      '"reporter" : { "displayName" : "', 'utf-8')
 
     # add an unicode character
