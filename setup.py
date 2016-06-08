@@ -9,7 +9,7 @@ except:
     long_description = description
 
 setup(name='JustReleaseNotes',
-      version='0.1.11',
+      version='0.1.12',
       description='Release notes generator package',
       long_description=long_description,
       url='https://github.com/Cimpress-MCP/JustReleaseNotes',
