@@ -37,7 +37,7 @@ class ReleaseNote_Test(unittest.TestCase):
 
         releaseNotes = JustReleaseNotes.releaseNotes.ReleaseNotes(conf, ticketProvider, repo, promotedVersions)
         releaseNotes.generateReleaseNotesByPromotedVersions(writer)
-        writer.printVersionBlock.assert_called_once_with({}, "1.0.1.2", "N/A", ["TCKT-1"])
+        writer.printVersionBlock.assert_called_once_with({}, "1.0.1.2", 735944, ["TCKT-1"])
 
     def test_givenUnicodeCharacterInTheInitialContent_DoesntFail(self):
 
