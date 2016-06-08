@@ -1,5 +1,6 @@
 import re
 import sys
+from datetime import datetime
 from JustReleaseNotes.writers import BaseWriter
 
 class MarkdownWriter(BaseWriter.BaseWriter):
@@ -30,7 +31,12 @@ class MarkdownWriter(BaseWriter.BaseWriter):
         version = self.convertVersion(version)
         data = [self.getVersionHeader(version)]
         if date != 'N/A':
-            data.append(date)
+            if (isinstance( date, int )):
+                dateObj = datetime.fromtimestamp(date)
+                formattedDate = dateObj.strftime('%Y-%m-%d')
+                data.append(formattedDate);
+            else:
+                data.append(date);
 
         data.append("")
         uniqTickets = sorted(set(tickets), reverse=True)

@@ -13,7 +13,16 @@
         "RepositoryUrl": "https://github.com/Cimpress-MCP/JustReleaseNotes.git",
         "VersionTagRegex": "^v([0-9]+\\.[0-9]+\\.[0-9]+)$"
       },
-      "ReleaseNotesWriter": "GithubMarkdownWriter"
+      "ReleaseNotesWriter" : [
+              {
+                "Provider" : "GithubMarkdownWriter",
+                "PathToSave" : "index.md"
+              },
+              {
+                "Provider" : "HtmlWriter",
+                "PathToSave" : "index.html"
+              }
+            ]
     }
   }
 }
