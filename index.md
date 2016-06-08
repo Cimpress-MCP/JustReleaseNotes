@@ -1,3 +1,17 @@
+## 0.1.11 ##
+2016-06-08 15:27:14
+
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img>[#56](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/56) Add date to ticket, *reported by* **thoean**
+* Stability improvements
+
+## 0.1.10 ##
+2016-06-07 13:05:49
+
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img>[#55](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/55) Support Jira labels, *reported by* **thoean**
+* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img>[#52](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/52) Changes related to incremental generation, *reported by* **rnowosielski**
+* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img>[#44](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/44) Sometimes when release generation adds to an existing file redundant new lines show up., *reported by* **rnowosielski**
+* Stability improvements
+
 ## 0.1.9 ##
 
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#48](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/48) Refactor recursive calls in sourcers, *reported by* **mmaruniak**
@@ -25,27 +39,4 @@
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#28](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/28) Allow multiple issue sources to be used simultaneously, *reported by* **rnowosielski**
 * <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#27](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/27) Fixes that resulted from first usage of version 0.1.2 with ivbcore, *reported by* **rnowosielski**
 * <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#25](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/25) Provide more configurability around git checkout, *reported by* **rnowosielski**
-* Stability improvements
-
-## 0.1.2 ##
-
-* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#8](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/8) Make the regular expression in extractTicketsFromMessage configurable.
-* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#7](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/7) Provide option to skip parts of configuration
-* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#6](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/6) Add UnitTests for some parts of the code so it could be promoted automatically
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#4](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/4) Release notes support for PostalCodes
-* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#3](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/3) Make changes for the ReleaseNotesGenerator to support PostalCodes.Net
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#23](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/23) Support remotes
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#22](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/22) Improve gpa by removing duplicated code
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#21](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/21) Adding some more unit tests for factory methods
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#20](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/20) Provide compatibility with Python 3.x.x [#19](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/19)
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#2](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/2) Creating package structure
-* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#19](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/19) Provide compatibility with Python 3.x.x
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#17](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/17) Bunch of fixes
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#16](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/16) Adding some more unit tests. 
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#15](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/15) Simplify EnvReplacer
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#14](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/14) Provide support for using environment variables in the config file [#13](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/13)
-* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#13](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/13) Provide support for using environment variables in the config file
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#12](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/12) Additional improvements that will enable using the tool in other projects
-* <img src="https://addons.cdn.mozilla.net/user-media/addon_icons/603/603460-64.png?modified=1428920625" width=16 height=16></img> [#11](https://github.com/Cimpress-MCP/JustReleaseNotes/pull/11) Reusable version extractor + unittests cross version
-* <img src="http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/imageLoader?appNum=1366861&extension=" width=16 height=16></img> [#1](https://github.com/Cimpress-MCP/JustReleaseNotes/issues/1) Adjust the structure of the module so that it can be deployed using PyIP
 * Stability improvements

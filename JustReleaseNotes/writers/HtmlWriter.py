@@ -1,4 +1,5 @@
 import re, sys
+from datetime import datetime
 from JustReleaseNotes.writers import BaseWriter
 
 class HtmlWriter(BaseWriter.BaseWriter):
@@ -29,7 +30,12 @@ class HtmlWriter(BaseWriter.BaseWriter):
         data = [self.getVersionHeader(version), "<h2>" + version]
 
         if date != 'N/A':
-            data.append("<sup><small style=\"font-size:10px\"><i> " + date + "</i></small></sup>")
+            if (isinstance( date, int )):
+                dateObj = datetime.fromtimestamp(date)
+                formattedDate = dateObj.strftime('%Y-%m-%d')
+                data.append("<sup><small style=\"font-size:10px\"><i> " + formattedDate + "</i></small></sup>")
+            else:
+                data.append("<sup><small style=\"font-size:10px\"><i> " + date + "</i></small></sup>")
         data.append("</h2>")
 
         if len(deps.keys()) > 0:

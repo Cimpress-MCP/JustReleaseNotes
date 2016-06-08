@@ -48,6 +48,30 @@ class HtmlWriter_Test(unittest.TestCase):
                          '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket, <i>reported by</i> <b>test user</b></li>\n</ul>\n</div>',
                          output)
 
+
+    def test_givenFairlyCompleteTicketHtmlBlockIsGenerated(self):
+        self.maxDiff = None
+        mockedTicketProvider = Mock()
+        mockedTicketProvider.getTicketInfo.side_effect = self.ticket_side_effect
+
+        writer = HtmlWriter.HtmlWriter(mockedTicketProvider)
+        deps = {"ANY": "SomeComponent1: 2.3.*; SomeComponent2: 1.0.0"}
+        version = "1.0.2.0"
+        date = 1422798811
+        tickets = ["ABCD-1", "ABCD-2"]
+        output = writer.printVersionBlock(deps, version, date, tickets)
+        self.assertEqual('<div style="width:100%; border: 0px">'
+                         '<a name="1.0.2.0" class="version"></a>\n'
+                         '<h2>1.0.2.0\n<sup><small style="font-size:10px"><i> 2015-02-01</i></small></sup>\n'
+                         '</h2>\n'
+                         '<div style="background: #eee; "><i>Components: \n'
+                         'SomeComponent1: 2.3.*; SomeComponent2: 1.0.0\n'
+                         '</i></div>\n'
+                         '<ul>\n'
+                         '<li style="font-size:14px"><a href="http://some.url">ABCD-2</a> ABCD2 ticket, <i>reported by</i> <b>test user</b></li>\n'
+                         '<li style="font-size:14px"><a href="http://some.url">ABCD-1</a> ABCD1 ticket, <i>reported by</i> <b>test user</b></li>\n</ul>\n</div>',
+                         output)
+
     def test_embeddedLinkProvided_ReplacesContentWithLink(self):
         mockedTicketProvider = Mock()
         mockedTicketProvider.getTicketInfo = self.ticket_side_effect_with_embedded_link

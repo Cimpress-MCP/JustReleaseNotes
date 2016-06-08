@@ -112,5 +112,20 @@ class MarkdownWriter_Test(unittest.TestCase):
         self.assertEqual(1, len(output))
         self.assertEqual(mockedData, writer.printVersionBlock(None, "1.0.0.1", None, None))
 
+    def test_printVersionBlockHandlesIntDate(self):
+        mockedTicketProvider = Mock()
+        mockedTicketProvider.getTicketInfo = self.ticket_side_effect
+
+        writer = MarkdownWriter.MarkdownWriter(mockedTicketProvider)
+        deps = {"ANY": "SomeComponent1: 2.3.*; SomeComponent2: 1.0.0"}
+        version = "1.0.2.0"
+        date = 1422798811
+        tickets = ["DBA-1", "DBA-2"]
+        output = writer.printVersionBlock(deps, version, date, tickets)
+        self.assertEqual(
+            "## 1.0.2.0 ##\n2015-02-01\n\n* [DBA-2](http://some.url) DBA2 ticket, *reported by* **test user**\n* [DBA-1](http://some.url) DBA1 ticket, *reported by* **test user**\n",
+            output)
+
+
 if __name__ == '__main__':
     unittest.main()
